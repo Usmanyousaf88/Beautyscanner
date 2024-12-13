@@ -1,4 +1,4 @@
-import { User, Settings, History, Heart, Bell, BellOff, Filter, Trophy, Award, Target, ListCheck } from "lucide-react";
+import { User, Settings, History, Heart, Bell, BellOff, Filter, Trophy, Award, Target, ListCheck, Star, Sparkles, Gift } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -73,6 +73,30 @@ const challenges = [
     reward: 150,
     deadline: "10 days left",
     icon: <Target className="text-green-500" />,
+  },
+];
+
+const rewards = [
+  {
+    id: 1,
+    title: "Eco-friendly Product Discount",
+    description: "15% off on selected eco-friendly products",
+    points: 200,
+    icon: <Gift className="text-primary" />,
+  },
+  {
+    id: 2,
+    title: "Premium Features Access",
+    description: "1-month access to premium features",
+    points: 300,
+    icon: <Award className="text-primary" />,
+  },
+  {
+    id: 3,
+    title: "Sustainable Brand Box",
+    description: "Curated box of sustainable beauty samples",
+    points: 500,
+    icon: <Gift className="text-primary" />,
   },
 ];
 
