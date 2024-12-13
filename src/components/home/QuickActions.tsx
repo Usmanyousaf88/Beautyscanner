@@ -19,7 +19,7 @@ const QuickActions = () => {
             </div>
             <div className="text-left">
               <span className="text-xl font-bold text-white block mb-2">Scan Product</span>
-              <span className="text-white/90 text-base">Check ingredients instantly</span>
+              <span className="text-white/90 text-base">Check ingredients & cosmetics instantly</span>
             </div>
           </div>
         </Link>
