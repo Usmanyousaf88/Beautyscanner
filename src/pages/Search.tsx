@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import {
   Collapsible,
   CollapsibleContent,
-  CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import CommunityForum from "@/components/social/CommunityForum";
 
 interface Ingredient {
   name: string;
@@ -210,7 +210,7 @@ const Search = () => {
             <h2 className="text-xl font-semibold text-charcoal mb-4">
               {filteredIngredients.length} Ingredients Found
             </h2>
-            <ScrollArea className="h-[calc(100vh-200px)]">
+            <ScrollArea className="h-[calc(50vh-100px)]">
               <div className="grid gap-4">
                 {filteredIngredients.map((ingredient) => (
                   <div
@@ -232,6 +232,11 @@ const Search = () => {
                 ))}
               </div>
             </ScrollArea>
+
+            {/* Add Community Forum below the ingredients list */}
+            <div className="mt-8">
+              <CommunityForum />
+            </div>
           </>
         )}
       </div>
