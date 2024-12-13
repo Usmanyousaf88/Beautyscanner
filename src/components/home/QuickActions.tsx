@@ -11,7 +11,7 @@ const QuickActions = () => {
       <div className="grid grid-cols-2 gap-4">
         <Link
           to="/bookmarks"
-          className="p-4 bg-secondary rounded-xl transition-all duration-300 hover:shadow-md flex flex-col items-center text-center"
+          className="p-4 bg-accent rounded-xl transition-all duration-300 hover:shadow-md flex flex-col items-center text-center"
         >
           <Bookmark className="h-8 w-8 mb-2 text-primary" />
           <span className="text-sm font-bold text-black">Saved Items</span>
