@@ -37,13 +37,13 @@ const CameraControls = ({
         <Button
           variant="outline"
           size="icon"
-          className="h-16 w-16 rounded-full border-4 border-white bg-accent hover:bg-accent-dark active:scale-95 transition-transform shadow-lg animate-pulse"
+          className="h-16 w-16 rounded-full border-4 border-white bg-accent hover:bg-accent-dark active:scale-95 transition-transform shadow-lg"
           onClick={onCapture}
         >
           {mode === 'scan' ? (
-            <Barcode className="h-8 w-8 text-charcoal" />
+            <Barcode className="h-8 w-8 text-charcoal animate-pulse" />
           ) : (
-            <Camera className="h-8 w-8 text-charcoal" />
+            <Camera className="h-8 w-8 text-charcoal animate-pulse" />
           )}
         </Button>
 
@@ -68,7 +68,7 @@ const CameraControls = ({
       <div className="relative flex items-center justify-center gap-2 px-6 py-3 mx-4 bg-accent/90 backdrop-blur-sm rounded-full shadow-md overflow-hidden">
         {/* Sliding background indicator */}
         <div
-          className={`absolute h-full w-[calc(50%-0.5px)] top-0 bg-accent-dark/20 rounded-full transition-all duration-300 ease-in-out ${
+          className={`absolute h-full w-[calc(50%-0.5px)] top-0 bg-accent-dark transition-transform duration-500 ease-in-out ${
             mode === 'photo' ? 'translate-x-[calc(100%+1px)]' : 'translate-x-0'
           }`}
           style={{
