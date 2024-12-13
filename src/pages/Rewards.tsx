@@ -8,6 +8,7 @@ import BadgesSection from "@/components/rewards/BadgesSection";
 import ChallengesSection from "@/components/rewards/ChallengesSection";
 import RewardCard from "@/components/rewards/RewardCard";
 import Navigation from "@/components/Navigation";
+import BackButton from "@/components/BackButton";
 
 const rewards = [
   {
@@ -76,6 +77,7 @@ const Rewards = () => {
 
   return (
     <div className="min-h-screen bg-cream pb-20">
+      <BackButton />
       <div className="max-w-lg mx-auto px-4 pt-8">
         <PointsDisplay points={totalPoints} />
         

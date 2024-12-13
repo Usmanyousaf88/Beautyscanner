@@ -1,4 +1,5 @@
 import Navigation from "@/components/Navigation";
+import BackButton from "@/components/BackButton";
 
 const tips = [
   {
@@ -24,6 +25,7 @@ const tips = [
 const Tips = () => {
   return (
     <div className="min-h-screen bg-cream pb-20">
+      <BackButton />
       <div className="max-w-lg mx-auto px-4 pt-8">
         <h1 className="text-3xl font-bold text-charcoal mb-6">Daily Tips</h1>
         

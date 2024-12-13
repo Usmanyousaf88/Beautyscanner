@@ -1,5 +1,6 @@
 import { User, Upload, Settings, History, Heart, Bell, BellOff, Filter } from "lucide-react";
 import Navigation from "@/components/Navigation";
+import BackButton from "@/components/BackButton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -54,6 +55,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-cream pb-24">
+      <BackButton />
       <div className="max-w-lg mx-auto px-4 pt-6 sm:pt-8">
         {/* User Header */}
         <div className="flex flex-col sm:flex-row items-center gap-4 mb-6 sm:mb-8">
