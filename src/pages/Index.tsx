@@ -1,82 +1,119 @@
 import React from "react";
-import { Scan, Search } from "lucide-react";
+import { Scan, Search, Info, Award } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import Navigation from "@/components/Navigation";
+import { Progress } from "@/components/ui/progress";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const { toast } = useToast();
+  const [progress, setProgress] = React.useState(0);
 
-  // Show welcome tip when component mounts
   React.useEffect(() => {
-    const showTip = setTimeout(() => {
+    // Animate progress bar on load
+    const timer = setTimeout(() => setProgress(66), 500);
+    
+    // Show welcome tip
+    const tipTimer = setTimeout(() => {
       toast({
-        title: "Quick Tip",
-        description: "Try scanning your favorite moisturizer to learn more about its ingredients!",
+        title: "Dica Rápida",
+        description: "Experimente escanear seu hidratante favorito para conhecer seus ingredientes!",
         duration: 5000,
       });
     }, 2000);
 
-    return () => clearTimeout(showTip);
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(tipTimer);
+    };
   }, [toast]);
 
-  const handleSearchFocus = () => {
-    toast({
-      title: "Search Products",
-      description: "Type any product name or ingredient to get started",
-      duration: 3000,
-    });
+  const handleScanClick = () => {
+    // Add pulse animation on click
+    const btn = document.querySelector('.scan-button');
+    btn?.classList.add('animate-pulse');
+    setTimeout(() => btn?.classList.remove('animate-pulse'), 1000);
   };
 
   return (
     <div className="min-h-screen bg-cream">
       <div className="max-w-lg mx-auto px-4 pt-8 pb-20">
-        <header className="text-center mb-12 animate-fade-in">
+        <header className="text-center mb-8 animate-fade-in">
           <h1 className="text-3xl font-bold text-charcoal mb-2">GreenBeauty</h1>
-          <p className="text-gray-600">Make conscious beauty choices</p>
+          <p className="text-gray-600">Faça escolhas conscientes de beleza</p>
         </header>
 
-        <div className="relative mb-8 animate-fade-in" style={{ animationDelay: "0.1s" }}>
-          <input
-            type="search"
-            placeholder="Search products or ingredients..."
-            className="w-full px-4 py-3 pl-12 rounded-full border border-gray-200 focus:outline-none focus:border-primary transition-colors"
-            onFocus={handleSearchFocus}
-          />
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+        {/* Progress Section */}
+        <div className="mb-8 bg-white p-6 rounded-xl shadow-sm animate-fade-in">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-charcoal">Seu Progresso</h2>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Award className="text-primary h-5 w-5" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>66% do caminho para seu próximo nível!</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+          <Progress value={progress} className="h-3 mb-2" />
+          <p className="text-sm text-gray-600">20 produtos escaneados</p>
         </div>
 
-        <div className="space-y-4 animate-fade-in" style={{ animationDelay: "0.2s" }}>
+        {/* Main Actions */}
+        <div className="space-y-4 animate-fade-in">
           <Link
             to="/scan"
-            className="block p-6 bg-primary text-white rounded-xl transition transform hover:scale-[1.02] active:scale-[0.98] hover:shadow-md"
+            className="scan-button block"
+            onClick={handleScanClick}
           >
-            <div className="flex items-center">
-              <Scan size={32} />
-              <div className="ml-4">
-                <h2 className="text-xl font-semibold">Scan Product</h2>
-                <p className="text-primary-light text-sm">Analyze ingredients instantly</p>
+            <Button
+              className="w-full p-6 bg-primary hover:bg-primary-dark text-white rounded-xl transition transform hover:scale-[1.02] active:scale-[0.98] shadow-lg"
+            >
+              <div className="flex items-center">
+                <Scan size={32} />
+                <div className="ml-4 text-left">
+                  <h2 className="text-xl font-semibold">Escanear Produto</h2>
+                  <p className="text-primary-light text-sm">Análise instantânea de ingredientes</p>
+                </div>
               </div>
-            </div>
+            </Button>
           </Link>
 
-          <Link
-            to="/search"
-            className="block p-6 bg-secondary rounded-xl transition transform hover:scale-[1.02] active:scale-[0.98] hover:shadow-md"
-          >
-            <div className="flex items-center">
-              <Search size={32} className="text-charcoal" />
-              <div className="ml-4">
-                <h2 className="text-xl font-semibold text-charcoal">Search Ingredients</h2>
-                <p className="text-gray-600 text-sm">Learn about ingredients</p>
+          <Link to="/search">
+            <Button
+              variant="secondary"
+              className="w-full p-6 bg-secondary hover:bg-secondary-dark rounded-xl transition transform hover:scale-[1.02] active:scale-[0.98] shadow-md"
+            >
+              <div className="flex items-center">
+                <Search size={32} className="text-charcoal" />
+                <div className="ml-4 text-left">
+                  <h2 className="text-xl font-semibold text-charcoal">Buscar Ingredientes</h2>
+                  <p className="text-gray-600 text-sm">Aprenda sobre ingredientes</p>
+                </div>
               </div>
-            </div>
+            </Button>
           </Link>
         </div>
 
-        <div className="mt-12 p-6 bg-accent rounded-xl animate-fade-in hover:shadow-md transition-shadow" style={{ animationDelay: "0.3s" }}>
-          <h3 className="text-lg font-semibold text-charcoal mb-2">Daily Tip</h3>
-          <p className="text-gray-600">Look for products with natural preservatives like neem oil or grapefruit seed extract instead of parabens.</p>
+        {/* Daily Tip */}
+        <div className="mt-8 p-6 bg-accent rounded-xl animate-fade-in hover:shadow-md transition-shadow">
+          <div className="flex items-center gap-3 mb-2">
+            <Info className="text-accent-dark h-5 w-5" />
+            <h3 className="text-lg font-semibold text-charcoal">Dica do Dia</h3>
+          </div>
+          <p className="text-gray-600">
+            Procure por produtos com conservantes naturais como óleo de neem ou extrato de semente de toranja ao invés de parabenos.
+          </p>
         </div>
       </div>
       
