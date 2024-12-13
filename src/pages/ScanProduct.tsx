@@ -1,177 +1,207 @@
-import { useState } from "react";
-import { Camera, CheckCircle, XCircle, Leaf, Skull, AlertCircle, ArrowRight } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { 
+  ArrowLeft, 
+  MoreVertical, 
+  Zap, 
+  Image as ImageIcon, 
+  FlipCamera2,
+  Camera
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
-import Navigation from "@/components/Navigation";
-import BackButton from "@/components/BackButton";
-
-interface ScanResult {
-  productName: string;
-  ingredients: {
-    name: string;
-    toxicity: 'safe' | 'moderate' | 'toxic';
-    environmental: 'good' | 'moderate' | 'bad';
-  }[];
-  environmentalImpact: string;
-  alternatives: string[];
-}
 
 const ScanProduct = () => {
-  const [isCameraActive, setIsCameraActive] = useState(false);
-  const [isScanning, setIsScanning] = useState(false);
-  const [scanProgress, setScanProgress] = useState(0);
-  const [scanResult, setScanResult] = useState<ScanResult | null>(null);
+  const navigate = useNavigate();
   const { toast } = useToast();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [hasFlash, setHasFlash] = useState(false);
+  const [isFlashOn, setIsFlashOn] = useState(false);
+  const [isFrontCamera, setIsFrontCamera] = useState(false);
+  const [stream, setStream] = useState<MediaStream | null>(null);
 
-  const handleScan = () => {
-    setIsCameraActive(true);
-    setIsScanning(true);
-    setScanProgress(0);
-    
-    // Simulate scanning progress
-    const progressInterval = setInterval(() => {
-      setScanProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(progressInterval);
-          return 100;
+  useEffect(() => {
+    startCamera();
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, [isFrontCamera]);
+
+  const startCamera = async () => {
+    try {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+
+      const newStream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: isFrontCamera ? "user" : "environment"
         }
-        return prev + 20;
       });
-    }, 500);
-    
-    // Simulated scan result after 3 seconds
-    setTimeout(() => {
-      clearInterval(progressInterval);
-      setScanProgress(100);
-      
-      toast({
-        title: "Success!",
-        description: "Product scanned successfully",
-        duration: 3000,
-      });
-      
-      setTimeout(() => {
-        setScanResult({
-          productName: "Example Beauty Cream",
-          ingredients: [
-            { name: "Aloe Vera", toxicity: "safe", environmental: "good" },
-            { name: "Parabens", toxicity: "toxic", environmental: "bad" },
-            { name: "Vitamin E", toxicity: "safe", environmental: "good" },
-          ],
-          environmentalImpact: "Moderate environmental impact due to non-recyclable packaging and presence of microplastics.",
-          alternatives: [
-            "Natural Beauty Cream",
-            "Eco-friendly Moisturizer",
-            "Green Beauty Solution"
-          ]
-        });
-        setIsScanning(false);
-        setIsCameraActive(false);
-      }, 500);
-    }, 3000);
-  };
 
-  const getToxicityIcon = (toxicity: string) => {
-    switch (toxicity) {
-      case 'safe':
-        return <CheckCircle className="text-primary" />;
-      case 'toxic':
-        return <Skull className="text-red-500" />;
-      default:
-        return <AlertCircle className="text-yellow-500" />;
+      setStream(newStream);
+      if (videoRef.current) {
+        videoRef.current.srcObject = newStream;
+      }
+
+      // Check if flash is available
+      const track = newStream.getVideoTracks()[0];
+      const capabilities = track.getCapabilities();
+      setHasFlash('torch' in capabilities);
+
+    } catch (error) {
+      console.error("Error accessing camera:", error);
+      toast({
+        title: "Camera Error",
+        description: "Unable to access camera. Please check permissions.",
+        variant: "destructive"
+      });
     }
   };
 
-  const getEnvironmentalIcon = (impact: string) => {
-    switch (impact) {
-      case 'good':
-        return <Leaf className="text-primary" />;
-      case 'bad':
-        return <XCircle className="text-red-500" />;
-      default:
-        return <AlertCircle className="text-yellow-500" />;
+  const toggleFlash = async () => {
+    if (!stream) return;
+    
+    const track = stream.getVideoTracks()[0];
+    const capabilities = track.getCapabilities();
+    
+    if ('torch' in capabilities) {
+      const newFlashState = !isFlashOn;
+      await track.applyConstraints({
+        advanced: [{ torch: newFlashState }]
+      });
+      setIsFlashOn(newFlashState);
+    }
+  };
+
+  const toggleCamera = () => {
+    setIsFrontCamera(!isFrontCamera);
+  };
+
+  const handleCapture = () => {
+    // Add capture logic here
+    toast({
+      title: "Product Captured",
+      description: "Analyzing ingredients...",
+    });
+  };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Handle file upload logic here
+      toast({
+        title: "Image Uploaded",
+        description: "Analyzing ingredients...",
+      });
     }
   };
 
   return (
-    <div className="min-h-screen bg-cream pb-20">
-      <div className="relative pt-6 px-4 mb-4">
-        <BackButton />
-        <h1 className="text-3xl font-bold text-charcoal mt-8">Scan Product</h1>
-      </div>
-      <div className="max-w-lg mx-auto px-4">
-        {!scanResult && (
-          <div className="bg-white rounded-xl p-6 shadow-sm mb-8">
-            {!isCameraActive ? (
-              <>
-                <p className="text-gray-600 mb-6">
-                  Position the product's barcode or ingredient list within the camera frame. 
-                  Hold steady for a clear scan.
-                </p>
-                <Button 
-                  className="w-full flex items-center justify-center gap-2 py-6"
-                  onClick={handleScan}
-                >
-                  <Camera className="w-6 h-6" />
-                  <span>Start Scanning</span>
-                </Button>
-              </>
-            ) : (
-              <div className="space-y-6">
-                <div className="text-center py-12">
-                  <p className="text-primary font-medium mb-4">
-                    {isScanning ? "Align the barcode within the frame..." : "Processing scan..."}
-                  </p>
-                  <div className="w-full max-w-sm mx-auto h-40 bg-gray-200 rounded-lg relative overflow-hidden">
-                    <Camera className={`w-12 h-12 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-primary ${isScanning ? 'animate-pulse' : ''}`} />
-                  </div>
-                </div>
-                <Progress value={scanProgress} className="w-full" />
-              </div>
-            )}
+    <div className="fixed inset-0 bg-black">
+      {/* Camera Feed */}
+      <video
+        ref={videoRef}
+        autoPlay
+        playsInline
+        className="h-full w-full object-cover"
+      />
+
+      {/* Overlay */}
+      <div className="absolute inset-0 flex flex-col">
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 bg-gradient-to-b from-black/50 to-transparent">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-white hover:bg-white/20"
+            onClick={() => navigate(-1)}
+          >
+            <ArrowLeft className="h-6 w-6" />
+          </Button>
+          <span className="text-white text-lg font-medium">Scanner</span>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-white hover:bg-white/20"
+          >
+            <MoreVertical className="h-6 w-6" />
+          </Button>
+        </div>
+
+        {/* Scanning Frame */}
+        <div className="flex-1 flex items-center justify-center p-4">
+          <div className="w-full max-w-sm aspect-[3/4] border-2 border-white/30 rounded-lg relative">
+            <div className="absolute inset-0 border-[16px] border-white/10 rounded-lg" />
+            <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-white" />
+            <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-white" />
+            <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-white" />
+            <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-white" />
           </div>
-        )}
+        </div>
 
-        {scanResult && (
-          <div className="space-y-6 animate-fade-in">
-            <Card className="p-6">
-              <h2 className="text-xl font-semibold mb-4">{scanResult.productName}</h2>
-              <div className="space-y-4">
-                <h3 className="font-medium text-gray-700">Ingredients Analysis</h3>
-                {scanResult.ingredients.map((ingredient, index) => (
-                  <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
-                    <span className="text-gray-700">{ingredient.name}</span>
-                    <div className="flex gap-2">
-                      {getToxicityIcon(ingredient.toxicity)}
-                      {getEnvironmentalIcon(ingredient.environmental)}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Card>
+        {/* Bottom Controls */}
+        <div className="p-4 bg-gradient-to-t from-black/50 to-transparent">
+          <div className="flex items-center justify-around mb-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white hover:bg-white/20"
+              onClick={toggleFlash}
+              disabled={!hasFlash}
+            >
+              <Zap className={`h-6 w-6 ${isFlashOn ? 'text-primary' : 'text-white'}`} />
+            </Button>
+            
+            {/* Capture Button */}
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-16 w-16 rounded-full border-4 border-white bg-white/10 hover:bg-white/20 animate-pulse"
+              onClick={handleCapture}
+            >
+              <Camera className="h-8 w-8 text-white" />
+            </Button>
 
-            <Card className="p-6">
-              <h3 className="font-medium text-gray-700 mb-3">Environmental Impact</h3>
-              <p className="text-gray-600">{scanResult.environmentalImpact}</p>
-            </Card>
-
-            <Card className="p-6">
-              <h3 className="font-medium text-gray-700 mb-3">Suggested Alternatives</h3>
-              <div className="space-y-2">
-                {scanResult.alternatives.map((alternative, index) => (
-                  <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
-                    <span className="text-gray-700">{alternative}</span>
-                    <ArrowRight className="text-primary w-4 h-4" />
-                  </div>
-                ))}
-              </div>
-            </Card>
+            <label className="cursor-pointer">
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleFileUpload}
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-white hover:bg-white/20"
+                type="button"
+              >
+                <ImageIcon className="h-6 w-6" />
+              </Button>
+            </label>
           </div>
-        )}
+
+          {/* Action Bar */}
+          <div className="flex items-center justify-center gap-8 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full">
+            <Button
+              variant="ghost"
+              className="text-white hover:bg-white/20 text-sm gap-2"
+            >
+              <Camera className="h-4 w-4" />
+              Scan food
+            </Button>
+            <Button
+              variant="ghost"
+              className="text-white hover:bg-white/20"
+              onClick={toggleCamera}
+            >
+              <FlipCamera2 className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
       </div>
-      <Navigation />
     </div>
   );
 };
