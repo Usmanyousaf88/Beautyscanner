@@ -1,5 +1,5 @@
 import React from "react";
-import { Scan, Search, Leaf } from "lucide-react";
+import { Scan, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import Navigation from "@/components/Navigation";
@@ -68,10 +68,7 @@ const Index = () => {
           >
             <div className="flex items-center">
               <div className="p-3 bg-white rounded-full group-hover:scale-110 transition-transform">
-                <div className="relative">
-                  <Search size={32} className="text-charcoal" />
-                  <Leaf size={16} className="absolute -bottom-1 -right-1 text-primary" />
-                </div>
+                <Search size={32} className="text-charcoal" />
               </div>
               <div className="ml-4">
                 <h2 className="text-2xl font-semibold text-charcoal mb-1">Search Ingredients</h2>
