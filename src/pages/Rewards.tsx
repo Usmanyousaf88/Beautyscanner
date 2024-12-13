@@ -131,8 +131,8 @@ const Rewards = () => {
                   <p className="text-sm text-primary mt-1">{reward.points} points</p>
                 </div>
                 <Button 
-                  variant="outline" 
-                  className="shrink-0"
+                  variant="outline"
+                  className="shrink-0 cursor-pointer"
                   disabled={totalPoints < reward.points}
                   onClick={() => handleRedeem(reward.points, reward.title)}
                 >
