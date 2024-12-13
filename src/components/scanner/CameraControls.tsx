@@ -68,9 +68,12 @@ const CameraControls = ({
       <div className="relative flex items-center justify-center gap-2 px-6 py-3 mx-4 bg-accent/90 backdrop-blur-sm rounded-full shadow-md overflow-hidden">
         {/* Sliding background indicator */}
         <div
-          className={`absolute h-full w-[calc(50%-0.5px)] top-0 bg-accent-dark/20 rounded-full transition-transform duration-300 ease-out ${
+          className={`absolute h-full w-[calc(50%-0.5px)] top-0 bg-accent-dark/20 rounded-full transition-all duration-300 ease-in-out ${
             mode === 'photo' ? 'translate-x-[calc(100%+1px)]' : 'translate-x-0'
           }`}
+          style={{
+            willChange: 'transform',
+          }}
         />
         
         <Button
