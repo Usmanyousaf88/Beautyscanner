@@ -8,6 +8,7 @@ interface RewardProps {
   icon: React.ReactNode;
   onRedeem: (points: number, title: string) => void;
   disabled: boolean;
+  isRedeeming: boolean;
 }
 
 const RewardCard = ({
@@ -17,6 +18,7 @@ const RewardCard = ({
   icon,
   onRedeem,
   disabled,
+  isRedeeming,
 }: RewardProps) => (
   <Card className="p-4">
     <div className="flex items-center gap-4">
@@ -30,9 +32,11 @@ const RewardCard = ({
         onClick={() => onRedeem(points, title)}
         disabled={disabled}
         variant="outline"
-        className="shrink-0"
+        className={`shrink-0 transition-all duration-300 ${
+          isRedeeming ? 'animate-pulse bg-primary/10' : ''
+        }`}
       >
-        Redeem
+        {isRedeeming ? 'Redeeming...' : 'Redeem'}
       </Button>
     </div>
   </Card>

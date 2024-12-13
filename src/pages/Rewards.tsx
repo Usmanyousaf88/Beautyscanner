@@ -103,12 +103,19 @@ const rewards = [
 const Rewards = () => {
   const [totalPoints, setTotalPoints] = useState(150);
   const [milestones, setMilestones] = useState(initialMilestones);
+  const [redeemingId, setRedeemingId] = useState<number | null>(null);
 
-  const handleRedeem = (rewardPoints: number, rewardTitle: string) => {
+  const handleRedeem = async (rewardPoints: number, rewardTitle: string, rewardId: number) => {
     if (totalPoints >= rewardPoints) {
-      setTotalPoints((prev) => prev - rewardPoints);
+      setRedeemingId(rewardId);
       
-      setMilestones((prev) => 
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setTotalPoints(prev => prev - rewardPoints);
+      
+      // Update milestone progress
+      setMilestones(prev => 
         prev.map(milestone => ({
           ...milestone,
           progress: Math.min(
@@ -119,6 +126,7 @@ const Rewards = () => {
       );
 
       toast.success(`Successfully redeemed: ${rewardTitle}`);
+      setRedeemingId(null);
     } else {
       toast.error("Not enough points to redeem this reward");
     }
@@ -135,7 +143,9 @@ const Rewards = () => {
           <h1 className="text-2xl font-bold text-charcoal">Your Rewards</h1>
           <div className="mt-4 bg-white rounded-xl p-6 shadow-sm">
             <p className="text-lg text-gray-600">You have</p>
-            <p className="text-4xl font-bold text-primary">{totalPoints} points</p>
+            <p className="text-4xl font-bold text-primary animate-fade-in">
+              {totalPoints} points
+            </p>
             <p className="text-sm text-gray-500 mt-2">Keep going to earn more rewards!</p>
             <ShareButton 
               title="Check out my GreenBeauty rewards!"
@@ -167,8 +177,9 @@ const Rewards = () => {
             <RewardCard
               key={reward.id}
               {...reward}
-              onRedeem={handleRedeem}
-              disabled={totalPoints < reward.points}
+              onRedeem={(points, title) => handleRedeem(points, title, reward.id)}
+              disabled={totalPoints < reward.points || redeemingId === reward.id}
+              isRedeeming={redeemingId === reward.id}
             />
           ))}
         </div>
