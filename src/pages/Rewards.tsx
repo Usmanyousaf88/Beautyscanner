@@ -1,4 +1,4 @@
-import { Trophy, Heart, ListCheck, Target, Star, Sparkles, Gift, Award } from "lucide-react";
+import { Trophy, Heart, ListCheck, Target, Star, Sparkles, Gift, Award, Eye } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -6,6 +6,7 @@ import MilestoneCard from "@/components/rewards/MilestoneCard";
 import ChallengeCard from "@/components/rewards/ChallengeCard";
 import RewardCard from "@/components/rewards/RewardCard";
 import ShareButton from "@/components/social/ShareButton";
+import { Switch } from "@/components/ui/switch";
 
 const initialMilestones = [
   {
@@ -103,6 +104,8 @@ const rewards = [
 const Rewards = () => {
   const [totalPoints, setTotalPoints] = useState(150);
   const [milestones, setMilestones] = useState(initialMilestones);
+  const [highContrast, setHighContrast] = useState(false);
+  const [largeText, setLargeText] = useState(false);
 
   const handleRedeem = (rewardPoints: number, rewardTitle: string) => {
     if (totalPoints >= rewardPoints) {
@@ -124,19 +127,69 @@ const Rewards = () => {
     }
   };
 
+  // Apply accessibility classes based on user preferences
+  const containerClasses = `min-h-screen pb-20 ${
+    highContrast 
+      ? 'bg-black text-white' 
+      : 'bg-cream'
+  } ${
+    largeText 
+      ? 'text-lg' 
+      : 'text-base'
+  }`;
+
+  const cardClasses = highContrast ? 'bg-gray-900 text-white border-white' : 'bg-white';
+
   return (
-    <div className="min-h-screen bg-cream pb-20">
+    <div className={containerClasses}>
       <div className="max-w-lg mx-auto px-4 pt-8">
-        {/* Points Counter */}
-        <div className="text-center mb-8">
-          <div className="w-24 h-24 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Trophy size={40} className="text-accent-dark" />
+        {/* Accessibility Controls */}
+        <div className="mb-6 p-4 rounded-lg bg-white shadow-sm" role="region" aria-label="Accessibility Controls">
+          <h2 className="text-lg font-semibold mb-4">Accessibility Options</h2>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <label htmlFor="high-contrast" className="flex items-center gap-2">
+                <Eye className="h-4 w-4" />
+                High Contrast Mode
+              </label>
+              <Switch
+                id="high-contrast"
+                checked={highContrast}
+                onCheckedChange={setHighContrast}
+                aria-label="Toggle high contrast mode"
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <label htmlFor="large-text" className="flex items-center gap-2">
+                <span className="text-xl">A</span>
+                Larger Text
+              </label>
+              <Switch
+                id="large-text"
+                checked={largeText}
+                onCheckedChange={setLargeText}
+                aria-label="Toggle larger text"
+              />
+            </div>
           </div>
-          <h1 className="text-2xl font-bold text-charcoal">Your Rewards</h1>
-          <div className="mt-4 bg-white rounded-xl p-6 shadow-sm">
-            <p className="text-lg text-gray-600">You have</p>
-            <p className="text-4xl font-bold text-primary">{totalPoints} points</p>
-            <p className="text-sm text-gray-500 mt-2">Keep going to earn more rewards!</p>
+        </div>
+
+        {/* Points Counter */}
+        <div className="text-center mb-8" role="region" aria-label="Points Summary">
+          <div className={`w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4 ${
+            highContrast ? 'bg-white text-black' : 'bg-accent/20'
+          }`}>
+            <Trophy size={40} className={highContrast ? 'text-black' : 'text-accent-dark'} aria-hidden="true" />
+          </div>
+          <h1 className={`text-2xl font-bold ${highContrast ? 'text-white' : 'text-charcoal'}`}>Your Rewards</h1>
+          <div className={`mt-4 rounded-xl p-6 shadow-sm ${cardClasses}`}>
+            <p className={`text-lg ${highContrast ? 'text-white' : 'text-gray-600'}`}>You have</p>
+            <p className={`text-4xl font-bold ${highContrast ? 'text-white' : 'text-primary'}`} aria-label={`${totalPoints} points`}>
+              {totalPoints} points
+            </p>
+            <p className={`text-sm mt-2 ${highContrast ? 'text-gray-300' : 'text-gray-500'}`}>
+              Keep going to earn more rewards!
+            </p>
             <ShareButton 
               title="Check out my GreenBeauty rewards!"
               text={`I've earned ${totalPoints} points on GreenBeauty! Join me in making sustainable beauty choices.`}
@@ -145,33 +198,51 @@ const Rewards = () => {
         </div>
 
         {/* Milestones Section */}
-        <h2 className="font-semibold text-charcoal mb-4">Your Badges</h2>
-        <div className="space-y-4 mb-8">
-          {milestones.map((milestone) => (
-            <MilestoneCard key={milestone.id} {...milestone} />
-          ))}
-        </div>
+        <section role="region" aria-label="Your Badges">
+          <h2 className={`font-semibold mb-4 ${highContrast ? 'text-white' : 'text-charcoal'}`}>Your Badges</h2>
+          <div className="space-y-4 mb-8">
+            {milestones.map((milestone) => (
+              <MilestoneCard 
+                key={milestone.id} 
+                {...milestone} 
+                highContrast={highContrast}
+                largeText={largeText}
+              />
+            ))}
+          </div>
+        </section>
 
         {/* Active Challenges Section */}
-        <h2 className="font-semibold text-charcoal mb-4">Active Challenges</h2>
-        <div className="space-y-4 mb-8">
-          {challenges.map((challenge) => (
-            <ChallengeCard key={challenge.id} {...challenge} />
-          ))}
-        </div>
+        <section role="region" aria-label="Active Challenges">
+          <h2 className={`font-semibold mb-4 ${highContrast ? 'text-white' : 'text-charcoal'}`}>Active Challenges</h2>
+          <div className="space-y-4 mb-8">
+            {challenges.map((challenge) => (
+              <ChallengeCard 
+                key={challenge.id} 
+                {...challenge} 
+                highContrast={highContrast}
+                largeText={largeText}
+              />
+            ))}
+          </div>
+        </section>
 
         {/* Rewards Section */}
-        <h2 className="font-semibold text-charcoal mb-4">Available Rewards</h2>
-        <div className="space-y-4 mb-8">
-          {rewards.map((reward) => (
-            <RewardCard
-              key={reward.id}
-              {...reward}
-              onRedeem={handleRedeem}
-              disabled={totalPoints < reward.points}
-            />
-          ))}
-        </div>
+        <section role="region" aria-label="Available Rewards">
+          <h2 className={`font-semibold mb-4 ${highContrast ? 'text-white' : 'text-charcoal'}`}>Available Rewards</h2>
+          <div className="space-y-4 mb-8">
+            {rewards.map((reward) => (
+              <RewardCard
+                key={reward.id}
+                {...reward}
+                onRedeem={handleRedeem}
+                disabled={totalPoints < reward.points}
+                highContrast={highContrast}
+                largeText={largeText}
+              />
+            ))}
+          </div>
+        </section>
       </div>
       <Navigation />
     </div>
