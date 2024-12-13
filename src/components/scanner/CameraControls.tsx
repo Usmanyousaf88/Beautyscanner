@@ -65,11 +65,11 @@ const CameraControls = ({
         </label>
       </div>
 
-      <div className="relative flex items-center justify-center gap-2 px-6 py-3 mx-4 bg-accent/90 backdrop-blur-sm rounded-full shadow-md overflow-hidden">
+      <div className="relative flex items-center justify-center gap-2 px-2 py-3 mx-4 bg-accent/90 backdrop-blur-sm rounded-full shadow-md overflow-hidden">
         {/* Sliding background indicator */}
         <div
-          className={`absolute h-full w-[calc(50%-0.5px)] top-0 bg-accent-dark transition-transform duration-500 ease-in-out ${
-            mode === 'photo' ? 'translate-x-[calc(100%+1px)]' : 'translate-x-0'
+          className={`absolute h-full w-1/2 top-0 bg-accent-dark transition-transform duration-500 ease-in-out ${
+            mode === 'photo' ? 'translate-x-full' : 'translate-x-0'
           }`}
           style={{
             willChange: 'transform',
