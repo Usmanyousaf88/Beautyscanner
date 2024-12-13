@@ -1,9 +1,11 @@
-import { Award, Gift, Star, Trophy, Sparkles } from "lucide-react";
+import { User, Settings, History, Heart, Bell, BellOff, Filter, Trophy, Award, Target, ListCheck } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
 import { toast } from "sonner";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { Progress } from "@/components/ui/progress";
 
 const initialMilestones = [
   {
@@ -14,6 +16,8 @@ const initialMilestones = [
     total: 10,
     icon: <Star className="text-primary" />,
     points: 50,
+    nextLevel: "Eco Pioneer",
+    howToEarn: "Scan more eco-friendly products to progress",
   },
   {
     id: 2,
@@ -23,6 +27,8 @@ const initialMilestones = [
     total: 20,
     icon: <Sparkles className="text-primary" />,
     points: 100,
+    nextLevel: "Ingredient Guru",
+    howToEarn: "Search and learn about new ingredients",
   },
   {
     id: 3,
@@ -32,21 +38,41 @@ const initialMilestones = [
     total: 5,
     icon: <Trophy className="text-primary" />,
     points: 75,
+    nextLevel: "Sustainability Champion",
+    howToEarn: "Find and switch to sustainable alternatives",
   },
 ];
 
-const rewards = [
+const challenges = [
   {
     id: 1,
-    title: "15% Off Natural Products",
-    points: 200,
-    description: "Get a discount on selected eco-friendly brands",
+    title: "Cruelty-Free Week",
+    description: "Scan 5 cruelty-free products this week",
+    progress: 2,
+    total: 5,
+    reward: 100,
+    deadline: "7 days left",
+    icon: <Heart className="text-pink-500" />,
   },
   {
     id: 2,
-    title: "Sustainable Beauty Box",
-    points: 500,
-    description: "Monthly box with sustainable beauty samples",
+    title: "Sunscreen Expert",
+    description: "Identify 3 safe sunscreens for sensitive skin",
+    progress: 1,
+    total: 3,
+    reward: 75,
+    deadline: "5 days left",
+    icon: <ListCheck className="text-yellow-500" />,
+  },
+  {
+    id: 3,
+    title: "Eco Brand Explorer",
+    description: "Discover 4 new eco-friendly brands",
+    progress: 0,
+    total: 4,
+    reward: 150,
+    deadline: "10 days left",
+    icon: <Target className="text-green-500" />,
   },
 ];
 
@@ -58,7 +84,6 @@ const Rewards = () => {
     if (totalPoints >= rewardPoints) {
       setTotalPoints((prev) => prev - rewardPoints);
       
-      // Update milestones progress
       setMilestones((prev) => 
         prev.map(milestone => ({
           ...milestone,
@@ -92,25 +117,67 @@ const Rewards = () => {
         </div>
 
         {/* Milestones Section */}
-        <h2 className="font-semibold text-charcoal mb-4">Current Milestones</h2>
+        <h2 className="font-semibold text-charcoal mb-4">Your Badges</h2>
         <div className="space-y-4 mb-8">
           {milestones.map((milestone) => (
-            <Card key={milestone.id} className="p-4">
-              <div className="flex items-center gap-4">
-                {milestone.icon}
-                <div className="flex-1">
-                  <h3 className="font-semibold text-charcoal">{milestone.title}</h3>
-                  <p className="text-sm text-gray-600">{milestone.description}</p>
-                  <div className="mt-2">
-                    <div className="w-full bg-gray-100 rounded-full h-2 mb-1">
-                      <div 
-                        className="bg-primary rounded-full h-2 transition-all duration-300" 
-                        style={{ width: `${(milestone.progress / milestone.total) * 100}%` }}
-                      />
+            <HoverCard key={milestone.id}>
+              <HoverCardTrigger asChild>
+                <Card className="p-4 cursor-pointer hover:shadow-md transition-all duration-300">
+                  <div className="flex items-center gap-4">
+                    <Award className="h-8 w-8 text-primary" />
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-charcoal">{milestone.title}</h3>
+                      <p className="text-sm text-gray-600">{milestone.description}</p>
+                      <div className="mt-2">
+                        <Progress value={(milestone.progress / milestone.total) * 100} className="h-2" />
+                        <p className="text-xs text-gray-500 mt-1">
+                          {milestone.progress}/{milestone.total} • {milestone.points} points
+                        </p>
+                      </div>
                     </div>
+                  </div>
+                </Card>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80">
+                <div className="space-y-2">
+                  <h4 className="font-semibold">Next Level: {milestone.nextLevel}</h4>
+                  <p className="text-sm text-gray-600">{milestone.howToEarn}</p>
+                  <div className="mt-2 pt-2 border-t">
                     <p className="text-xs text-gray-500">
-                      {milestone.progress}/{milestone.total} • {milestone.points} points
+                      Progress: {milestone.progress}/{milestone.total} completed
                     </p>
+                  </div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
+          ))}
+        </div>
+
+        {/* Active Challenges Section */}
+        <h2 className="font-semibold text-charcoal mb-4">Active Challenges</h2>
+        <div className="space-y-4 mb-8">
+          {challenges.map((challenge) => (
+            <Card key={challenge.id} className="p-4 hover:shadow-md transition-all duration-300">
+              <div className="flex items-center gap-4">
+                {challenge.icon}
+                <div className="flex-1">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="font-semibold text-charcoal">{challenge.title}</h3>
+                      <p className="text-sm text-gray-600">{challenge.description}</p>
+                    </div>
+                    <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
+                      +{challenge.reward} pts
+                    </span>
+                  </div>
+                  <div className="mt-2">
+                    <Progress value={(challenge.progress / challenge.total) * 100} className="h-2" />
+                    <div className="flex justify-between mt-1">
+                      <p className="text-xs text-gray-500">
+                        {challenge.progress}/{challenge.total} completed
+                      </p>
+                      <p className="text-xs text-gray-500">{challenge.deadline}</p>
+                    </div>
                   </div>
                 </div>
               </div>
