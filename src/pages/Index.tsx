@@ -100,7 +100,7 @@ const Index = () => {
 
           <Link
             to="/search"
-            className="block p-6 bg-secondary rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg group"
+            className="block p-6 bg-primary-light rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg group"
           >
             <div className="flex items-center">
               <div className="p-3 bg-white rounded-full group-hover:scale-110 transition-transform">
@@ -143,7 +143,7 @@ const Index = () => {
                       {item.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="px-3 py-1 bg-accent/50 rounded-full text-xs font-medium text-primary-dark"
+                          className="px-3 py-1 bg-primary-light/50 rounded-full text-xs font-medium text-primary-dark"
                         >
                           {tag}
                         </span>
