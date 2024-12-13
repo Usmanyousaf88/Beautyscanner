@@ -45,8 +45,7 @@ const MilestoneCard = ({
                     </div>
                   </TooltipTrigger>
                   <TooltipContent className="bg-white p-2">
-                    <p className="font-medium">{progress} of {total} completed</p>
-                    <p className="text-xs text-gray-500">Click for more details</p>
+                    <p className="text-sm text-gray-600">Click for more details</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
