@@ -56,19 +56,19 @@ const Rewards = () => {
 
   const handleRedeem = (rewardPoints: number, rewardTitle: string) => {
     if (totalPoints >= rewardPoints) {
-      // Subtract points from total
-      setTotalPoints(prev => prev - rewardPoints);
+      setTotalPoints((prev) => prev - rewardPoints);
       
-      // Update milestones progress proportionally
-      const pointReduction = rewardPoints / milestones.length;
-      setMilestones(prev => 
+      // Update milestones progress
+      setMilestones((prev) => 
         prev.map(milestone => ({
           ...milestone,
-          progress: Math.max(0, milestone.progress - Math.ceil(pointReduction / milestone.points))
+          progress: Math.min(
+            milestone.total,
+            milestone.progress + Math.ceil(rewardPoints / 100)
+          )
         }))
       );
 
-      // Show success message
       toast.success(`Successfully redeemed: ${rewardTitle}`);
     } else {
       toast.error("Not enough points to redeem this reward");
@@ -131,10 +131,10 @@ const Rewards = () => {
                   <p className="text-sm text-primary mt-1">{reward.points} points</p>
                 </div>
                 <Button 
-                  variant="outline"
-                  className="shrink-0 cursor-pointer"
-                  disabled={totalPoints < reward.points}
                   onClick={() => handleRedeem(reward.points, reward.title)}
+                  disabled={totalPoints < reward.points}
+                  variant="outline"
+                  className="shrink-0"
                 >
                   Redeem
                 </Button>
