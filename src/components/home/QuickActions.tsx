@@ -8,23 +8,29 @@ const QuickActions = () => {
       <h2 className="text-xl font-semibold text-charcoal mb-4 flex items-center gap-2">
         Quick Actions
       </h2>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="flex flex-col gap-4 mb-6">
         <Link
           to="/scan"
-          className="p-4 bg-accent rounded-xl transition-all duration-300 hover:shadow-md flex flex-col items-center text-center"
+          className="p-6 bg-accent rounded-xl transition-all duration-300 hover:shadow-md flex items-center gap-4"
         >
-          <Scan className="h-8 w-8 mb-2 text-primary" />
-          <span className="text-sm font-bold text-black">Scan Product</span>
-          <span className="text-xs text-gray-600 mt-1">Check ingredients</span>
+          <Scan className="h-12 w-12 text-primary shrink-0" />
+          <div className="text-left">
+            <span className="text-lg font-bold text-black block">Scan Product</span>
+            <span className="text-sm text-gray-600">Check ingredients instantly</span>
+          </div>
         </Link>
         <Link
           to="/search"
-          className="p-4 bg-accent rounded-xl transition-all duration-300 hover:shadow-md flex flex-col items-center text-center"
+          className="p-6 bg-accent rounded-xl transition-all duration-300 hover:shadow-md flex items-center gap-4"
         >
-          <Search className="h-8 w-8 mb-2 text-primary" />
-          <span className="text-sm font-bold text-black">Search</span>
-          <span className="text-xs text-gray-600 mt-1">Find products</span>
+          <Search className="h-12 w-12 text-primary shrink-0" />
+          <div className="text-left">
+            <span className="text-lg font-bold text-black block">Search</span>
+            <span className="text-sm text-gray-600">Find safe beauty products</span>
+          </div>
         </Link>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
         <Link
           to="/bookmarks"
           className="p-4 bg-accent rounded-xl transition-all duration-300 hover:shadow-md flex flex-col items-center text-center"
