@@ -57,13 +57,16 @@ const Profile = () => {
         <div className="flex items-center gap-4 mb-8">
           <div className="relative group">
             <Avatar 
-              className="h-16 w-16 cursor-pointer hover:opacity-80 transition-opacity"
+              className="h-16 w-16 cursor-pointer hover:opacity-80 transition-opacity relative"
               onClick={handleAvatarClick}
             >
               <AvatarImage src={avatarUrl || "/placeholder.svg"} />
               <AvatarFallback>
                 <User className="h-8 w-8" />
               </AvatarFallback>
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-50 rounded-full">
+                <Upload className="h-6 w-6 text-white" />
+              </div>
             </Avatar>
             <input
               type="file"
@@ -72,9 +75,6 @@ const Profile = () => {
               accept="image/*"
               onChange={handleFileChange}
             />
-            <div className="absolute bottom-0 right-0 bg-primary rounded-full p-1 cursor-pointer group-hover:scale-110 transition-transform">
-              <Upload className="h-3 w-3 text-white" />
-            </div>
           </div>
           <div>
             <h1 className="text-2xl font-bold text-charcoal">Sarah Johnson</h1>
