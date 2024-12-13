@@ -70,7 +70,7 @@ const Index = () => {
         title: "Quick Tip",
         description: "Try scanning your favorite moisturizer to learn more about its ingredients!",
         duration: 8000,
-        className: "w-[200px] bottom-16 right-4 fixed text-sm [&>div]:flex [&>div]:flex-row [&>div]:items-center [&>div]:gap-2",
+        className: "w-[200px] bottom-16 right-4 fixed text-sm [&>div]:flex [&>div]:flex-col [&>div]:gap-1",
       });
     }, 1000);
 
