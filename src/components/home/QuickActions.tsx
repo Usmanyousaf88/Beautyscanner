@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Bookmark, Star } from "lucide-react";
+import { Bookmark, Star, Scan, Search } from "lucide-react";
 
 const QuickActions = () => {
   return (
@@ -9,6 +9,22 @@ const QuickActions = () => {
         Quick Actions
       </h2>
       <div className="grid grid-cols-2 gap-4">
+        <Link
+          to="/scan"
+          className="p-4 bg-accent rounded-xl transition-all duration-300 hover:shadow-md flex flex-col items-center text-center"
+        >
+          <Scan className="h-8 w-8 mb-2 text-primary" />
+          <span className="text-sm font-bold text-black">Scan Product</span>
+          <span className="text-xs text-gray-600 mt-1">Check ingredients</span>
+        </Link>
+        <Link
+          to="/search"
+          className="p-4 bg-accent rounded-xl transition-all duration-300 hover:shadow-md flex flex-col items-center text-center"
+        >
+          <Search className="h-8 w-8 mb-2 text-primary" />
+          <span className="text-sm font-bold text-black">Search</span>
+          <span className="text-xs text-gray-600 mt-1">Find products</span>
+        </Link>
         <Link
           to="/bookmarks"
           className="p-4 bg-accent rounded-xl transition-all duration-300 hover:shadow-md flex flex-col items-center text-center"
