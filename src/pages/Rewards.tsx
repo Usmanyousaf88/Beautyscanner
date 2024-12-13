@@ -177,11 +177,13 @@ const Rewards = () => {
             <p className="text-4xl font-bold text-primary animate-fade-in">
               {totalPoints} points
             </p>
-            <p className="text-sm text-gray-500 mt-2">Keep going to earn more rewards!</p>
-            <ShareButton 
-              title="Check out my GreenBeauty rewards!"
-              text={`I've earned ${totalPoints} points on GreenBeauty! Join me in making sustainable beauty choices.`}
-            />
+            <p className="text-sm text-gray-500 mt-2 mb-6">Keep going to earn more rewards!</p>
+            <div className="flex justify-center">
+              <ShareButton 
+                title="Check out my GreenBeauty rewards!"
+                text={`I've earned ${totalPoints} points on GreenBeauty! Join me in making sustainable beauty choices.`}
+              />
+            </div>
           </div>
         </div>
 
