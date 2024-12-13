@@ -6,7 +6,6 @@ import { useToast } from "@/hooks/use-toast";
 import CameraControls from "@/components/scanner/CameraControls";
 import ScanningFrame from "@/components/scanner/ScanningFrame";
 
-// Add type definition for ImageCapture
 declare global {
   interface Window {
     ImageCapture: any;
@@ -121,7 +120,7 @@ const ScanProduct = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="text-white hover:bg-white/20"
+            className="text-white hover:bg-white/20 active:scale-95 transition-transform"
             onClick={() => navigate(-1)}
           >
             <ArrowLeft className="h-6 w-6" />
@@ -130,7 +129,7 @@ const ScanProduct = () => {
           <Button
             variant="ghost"
             size="icon"
-            className="text-white hover:bg-white/20"
+            className="text-white hover:bg-white/20 active:scale-95 transition-transform"
           >
             <MoreVertical className="h-6 w-6" />
           </Button>

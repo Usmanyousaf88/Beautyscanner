@@ -25,7 +25,7 @@ const CameraControls = ({
         <Button
           variant="ghost"
           size="icon"
-          className="text-white hover:bg-white/20"
+          className="text-white hover:bg-accent/20 active:scale-95 transition-transform"
           onClick={onFlashToggle}
           disabled={!hasFlash}
         >
@@ -35,10 +35,10 @@ const CameraControls = ({
         <Button
           variant="outline"
           size="icon"
-          className="h-16 w-16 rounded-full border-4 border-white bg-white/10 hover:bg-white/20 animate-pulse"
+          className="h-16 w-16 rounded-full border-4 border-white bg-accent hover:bg-accent-dark active:scale-95 transition-transform shadow-lg animate-pulse"
           onClick={onCapture}
         >
-          <Camera className="h-8 w-8 text-white" />
+          <Camera className="h-8 w-8 text-charcoal" />
         </Button>
 
         <label className="cursor-pointer">
@@ -51,7 +51,7 @@ const CameraControls = ({
           <Button
             variant="ghost"
             size="icon"
-            className="text-white hover:bg-white/20"
+            className="text-white hover:bg-accent/20 active:scale-95 transition-transform"
             type="button"
           >
             <ImageIcon className="h-6 w-6" />
@@ -59,17 +59,17 @@ const CameraControls = ({
         </label>
       </div>
 
-      <div className="flex items-center justify-center gap-8 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full">
+      <div className="flex items-center justify-center gap-8 px-6 py-3 mx-4 bg-accent/90 backdrop-blur-sm rounded-full shadow-md">
         <Button
           variant="ghost"
-          className="text-white hover:bg-white/20 text-sm gap-2"
+          className="text-charcoal hover:bg-accent-dark/30 active:scale-95 transition-transform text-sm gap-2 font-medium"
         >
           <Camera className="h-4 w-4" />
           Scan food
         </Button>
         <Button
           variant="ghost"
-          className="text-white hover:bg-white/20"
+          className="text-charcoal hover:bg-accent-dark/30 active:scale-95 transition-transform"
           onClick={onCameraSwitch}
         >
           <SwitchCamera className="h-4 w-4" />
