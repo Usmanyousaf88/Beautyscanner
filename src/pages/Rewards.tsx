@@ -2,8 +2,10 @@ import { Award, Gift, Star, Trophy, Sparkles } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useState } from "react";
+import { toast } from "sonner";
 
-const milestones = [
+const initialMilestones = [
   {
     id: 1,
     title: "Eco Explorer",
@@ -49,6 +51,30 @@ const rewards = [
 ];
 
 const Rewards = () => {
+  const [totalPoints, setTotalPoints] = useState(150);
+  const [milestones, setMilestones] = useState(initialMilestones);
+
+  const handleRedeem = (rewardPoints: number, rewardTitle: string) => {
+    if (totalPoints >= rewardPoints) {
+      // Subtract points from total
+      setTotalPoints(prev => prev - rewardPoints);
+      
+      // Update milestones progress proportionally
+      const pointReduction = rewardPoints / milestones.length;
+      setMilestones(prev => 
+        prev.map(milestone => ({
+          ...milestone,
+          progress: Math.max(0, milestone.progress - Math.ceil(pointReduction / milestone.points))
+        }))
+      );
+
+      // Show success message
+      toast.success(`Successfully redeemed: ${rewardTitle}`);
+    } else {
+      toast.error("Not enough points to redeem this reward");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-cream pb-20">
       <div className="max-w-lg mx-auto px-4 pt-8">
@@ -60,7 +86,7 @@ const Rewards = () => {
           <h1 className="text-2xl font-bold text-charcoal">Your Rewards</h1>
           <div className="mt-4 bg-white rounded-xl p-6 shadow-sm">
             <p className="text-lg text-gray-600">You have</p>
-            <p className="text-4xl font-bold text-primary">150 points</p>
+            <p className="text-4xl font-bold text-primary">{totalPoints} points</p>
             <p className="text-sm text-gray-500 mt-2">Keep going to earn more rewards!</p>
           </div>
         </div>
@@ -78,7 +104,7 @@ const Rewards = () => {
                   <div className="mt-2">
                     <div className="w-full bg-gray-100 rounded-full h-2 mb-1">
                       <div 
-                        className="bg-primary rounded-full h-2" 
+                        className="bg-primary rounded-full h-2 transition-all duration-300" 
                         style={{ width: `${(milestone.progress / milestone.total) * 100}%` }}
                       />
                     </div>
@@ -107,7 +133,8 @@ const Rewards = () => {
                 <Button 
                   variant="outline" 
                   className="shrink-0"
-                  disabled={150 < reward.points}
+                  disabled={totalPoints < reward.points}
+                  onClick={() => handleRedeem(reward.points, reward.title)}
                 >
                   Redeem
                 </Button>
