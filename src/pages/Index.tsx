@@ -98,7 +98,7 @@ const Index = () => {
                 <h2 className="text-2xl font-semibold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)] mb-1">
                   Scan Product
                 </h2>
-                <p className="text-primary-light text-sm drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">
+                <p className="text-white/90 text-sm drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">
                   Analyze ingredients instantly
                 </p>
               </div>
@@ -120,7 +120,7 @@ const Index = () => {
                 <h2 className="text-2xl font-semibold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)] mb-1">
                   Search Ingredients
                 </h2>
-                <p className="text-primary-light text-sm drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">
+                <p className="text-white/90 text-sm drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">
                   Learn about ingredients
                 </p>
               </div>
