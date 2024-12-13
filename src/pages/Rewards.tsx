@@ -8,6 +8,7 @@ import RewardCard from "@/components/rewards/RewardCard";
 import ShareButton from "@/components/social/ShareButton";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import confetti from 'canvas-confetti';
+import { Card } from "@/components/ui/card";  // Add this import at the top of the file
 
 const initialMilestones = [
   {
