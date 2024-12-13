@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import Navigation from "@/components/Navigation";
+import BackButton from "@/components/BackButton";
 
 interface ScanResult {
   productName: string;
@@ -96,6 +97,7 @@ const ScanProduct = () => {
 
   return (
     <div className="min-h-screen bg-cream pb-20">
+      <BackButton />
       <div className="max-w-lg mx-auto px-4 pt-8">
         <h1 className="text-3xl font-bold text-charcoal mb-6">Scan Product</h1>
         

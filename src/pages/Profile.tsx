@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
+import BackButton from "@/components/BackButton";
 
 const Profile = () => {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
@@ -54,6 +55,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-cream pb-24">
+      <BackButton />
       <div className="max-w-lg mx-auto px-4 pt-6 sm:pt-8">
         {/* User Header */}
         <div className="flex flex-col sm:flex-row items-center gap-4 mb-6 sm:mb-8">

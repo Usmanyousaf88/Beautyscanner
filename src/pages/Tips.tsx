@@ -1,41 +1,20 @@
+import BackButton from "@/components/BackButton";
 import Navigation from "@/components/Navigation";
-
-const tips = [
-  {
-    id: 1,
-    title: "Natural Preservatives",
-    content: "Look for products with natural preservatives like neem oil or grapefruit seed extract instead of parabens.",
-    category: "Ingredients",
-  },
-  {
-    id: 2,
-    title: "Sustainable Packaging",
-    content: "Choose products with recyclable glass containers over plastic packaging when possible.",
-    category: "Sustainability",
-  },
-  {
-    id: 3,
-    title: "Patch Testing",
-    content: "Always patch test new products on a small area of skin for 24 hours before full application.",
-    category: "Safety",
-  },
-];
 
 const Tips = () => {
   return (
     <div className="min-h-screen bg-cream pb-20">
+      <BackButton />
       <div className="max-w-lg mx-auto px-4 pt-8">
-        <h1 className="text-3xl font-bold text-charcoal mb-6">Daily Tips</h1>
-        
-        <div className="space-y-4">
-          {tips.map((tip) => (
-            <div key={tip.id} className="bg-white rounded-xl p-6 shadow-sm">
-              <span className="text-sm text-primary font-medium">{tip.category}</span>
-              <h2 className="text-lg font-semibold text-charcoal mt-1 mb-2">{tip.title}</h2>
-              <p className="text-gray-600">{tip.content}</p>
-            </div>
-          ))}
-        </div>
+        <h1 className="text-3xl font-bold text-charcoal mb-6">Tips</h1>
+        <p className="text-base text-gray-600 mb-4">Here are some tips to help you make conscious beauty choices:</p>
+        <ul className="list-disc list-inside space-y-2">
+          <li>Always check the ingredient list before purchasing a product.</li>
+          <li>Look for certifications like organic, cruelty-free, and vegan.</li>
+          <li>Research brands to understand their sustainability practices.</li>
+          <li>Consider the environmental impact of packaging.</li>
+          <li>Stay informed about harmful ingredients to avoid.</li>
+        </ul>
       </div>
       <Navigation />
     </div>
