@@ -15,13 +15,15 @@ const QuickActions = () => {
         >
           <Bookmark className="h-8 w-8 mb-2 text-primary" />
           <span className="text-sm font-bold text-black">Saved Items</span>
+          <span className="text-xs text-gray-600 mt-1">View your list</span>
         </Link>
         <Link
           to="/search?popular=true"
           className="p-4 bg-accent rounded-xl transition-all duration-300 hover:shadow-md flex flex-col items-center text-center"
         >
           <Star className="h-8 w-8 mb-2 text-primary" />
-          <span className="text-sm font-bold text-black">Popular Ingredients</span>
+          <span className="text-sm font-bold text-black">Popular</span>
+          <span className="text-xs text-gray-600 mt-1">Trending items</span>
         </Link>
       </div>
     </div>
