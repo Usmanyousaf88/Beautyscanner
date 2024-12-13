@@ -1,5 +1,5 @@
 import React from "react";
-import { Scan, Search } from "lucide-react";
+import { Scan, Search, Leaf } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import Navigation from "@/components/Navigation";
@@ -79,7 +79,8 @@ const Index = () => {
         </div>
 
         <div className="mt-12 p-6 bg-accent rounded-xl animate-fade-in hover:shadow-lg transition-all duration-300" style={{ animationDelay: "0.3s" }}>
-          <h3 className="text-xl font-semibold text-charcoal mb-3">
+          <h3 className="text-xl font-semibold text-charcoal mb-3 flex items-center">
+            <Leaf className="mr-2 text-primary" size={20} />
             Daily Tip
           </h3>
           <p className="text-gray-600 leading-relaxed">
