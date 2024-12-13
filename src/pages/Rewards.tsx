@@ -1,11 +1,12 @@
-import { User, Settings, History, Heart, Bell, BellOff, Filter, Trophy, Award, Target, ListCheck, Star, Sparkles, Gift } from "lucide-react";
+import { Trophy, Heart, ListCheck, Target, Star, Sparkles, Gift, Award } from "lucide-react";
 import Navigation from "@/components/Navigation";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { useState } from "react";
 import { toast } from "sonner";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import { Progress } from "@/components/ui/progress";
+import MilestoneCard from "@/components/rewards/MilestoneCard";
+import ChallengeCard from "@/components/rewards/ChallengeCard";
+import RewardCard from "@/components/rewards/RewardCard";
+import CommunityForum from "@/components/social/CommunityForum";
+import ShareButton from "@/components/social/ShareButton";
 
 const initialMilestones = [
   {
@@ -137,6 +138,10 @@ const Rewards = () => {
             <p className="text-lg text-gray-600">You have</p>
             <p className="text-4xl font-bold text-primary">{totalPoints} points</p>
             <p className="text-sm text-gray-500 mt-2">Keep going to earn more rewards!</p>
+            <ShareButton 
+              title="Check out my GreenBeauty rewards!"
+              text={`I've earned ${totalPoints} points on GreenBeauty! Join me in making sustainable beauty choices.`}
+            />
           </div>
         </div>
 
@@ -144,36 +149,7 @@ const Rewards = () => {
         <h2 className="font-semibold text-charcoal mb-4">Your Badges</h2>
         <div className="space-y-4 mb-8">
           {milestones.map((milestone) => (
-            <HoverCard key={milestone.id}>
-              <HoverCardTrigger asChild>
-                <Card className="p-4 cursor-pointer hover:shadow-md transition-all duration-300">
-                  <div className="flex items-center gap-4">
-                    <Award className="h-8 w-8 text-primary" />
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-charcoal">{milestone.title}</h3>
-                      <p className="text-sm text-gray-600">{milestone.description}</p>
-                      <div className="mt-2">
-                        <Progress value={(milestone.progress / milestone.total) * 100} className="h-2" />
-                        <p className="text-xs text-gray-500 mt-1">
-                          {milestone.progress}/{milestone.total} • {milestone.points} points
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-              </HoverCardTrigger>
-              <HoverCardContent className="w-80">
-                <div className="space-y-2">
-                  <h4 className="font-semibold">Next Level: {milestone.nextLevel}</h4>
-                  <p className="text-sm text-gray-600">{milestone.howToEarn}</p>
-                  <div className="mt-2 pt-2 border-t">
-                    <p className="text-xs text-gray-500">
-                      Progress: {milestone.progress}/{milestone.total} completed
-                    </p>
-                  </div>
-                </div>
-              </HoverCardContent>
-            </HoverCard>
+            <MilestoneCard key={milestone.id} {...milestone} />
           ))}
         </div>
 
@@ -181,58 +157,25 @@ const Rewards = () => {
         <h2 className="font-semibold text-charcoal mb-4">Active Challenges</h2>
         <div className="space-y-4 mb-8">
           {challenges.map((challenge) => (
-            <Card key={challenge.id} className="p-4 hover:shadow-md transition-all duration-300">
-              <div className="flex items-center gap-4">
-                {challenge.icon}
-                <div className="flex-1">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="font-semibold text-charcoal">{challenge.title}</h3>
-                      <p className="text-sm text-gray-600">{challenge.description}</p>
-                    </div>
-                    <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
-                      +{challenge.reward} pts
-                    </span>
-                  </div>
-                  <div className="mt-2">
-                    <Progress value={(challenge.progress / challenge.total) * 100} className="h-2" />
-                    <div className="flex justify-between mt-1">
-                      <p className="text-xs text-gray-500">
-                        {challenge.progress}/{challenge.total} completed
-                      </p>
-                      <p className="text-xs text-gray-500">{challenge.deadline}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Card>
+            <ChallengeCard key={challenge.id} {...challenge} />
           ))}
         </div>
 
         {/* Rewards Section */}
         <h2 className="font-semibold text-charcoal mb-4">Available Rewards</h2>
-        <div className="space-y-4">
+        <div className="space-y-4 mb-8">
           {rewards.map((reward) => (
-            <Card key={reward.id} className="p-4">
-              <div className="flex items-center gap-4">
-                <Gift className="text-primary" />
-                <div className="flex-1">
-                  <h3 className="font-semibold text-charcoal">{reward.title}</h3>
-                  <p className="text-sm text-gray-600">{reward.description}</p>
-                  <p className="text-sm text-primary mt-1">{reward.points} points</p>
-                </div>
-                <Button 
-                  onClick={() => handleRedeem(reward.points, reward.title)}
-                  disabled={totalPoints < reward.points}
-                  variant="outline"
-                  className="shrink-0"
-                >
-                  Redeem
-                </Button>
-              </div>
-            </Card>
+            <RewardCard
+              key={reward.id}
+              {...reward}
+              onRedeem={handleRedeem}
+              disabled={totalPoints < reward.points}
+            />
           ))}
         </div>
+
+        {/* Community Forum Section */}
+        <CommunityForum />
       </div>
       <Navigation />
     </div>
