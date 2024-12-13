@@ -115,28 +115,35 @@ const Index = () => {
         </div>
 
         {/* Recommendations Section */}
-        <Card className="mt-8 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-          <CardHeader className="flex flex-row items-center space-y-0">
-            <CardTitle className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-primary" />
+        <Card className="mt-8 animate-fade-in bg-white/50 backdrop-blur-sm" style={{ animationDelay: "0.3s" }}>
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center gap-2 text-xl">
+              <Sparkles className="h-5 w-5 text-primary animate-pulse" />
               Recommended for You
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ScrollArea className="h-[200px] rounded-md">
-              <div className="space-y-4">
+            <ScrollArea className="h-[280px] pr-4">
+              <div className="grid gap-4">
                 {recommendations?.map((item) => (
                   <div
                     key={item.id}
-                    className="p-4 bg-white rounded-lg border border-gray-100 hover:border-primary transition-colors"
+                    className="p-4 bg-white rounded-xl border border-primary/10 hover:border-primary/30 transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg"
                   >
-                    <h3 className="font-medium text-charcoal">{item.title}</h3>
-                    <p className="text-sm text-gray-600">{item.brand}</p>
-                    <div className="flex gap-2 mt-2">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="font-semibold text-charcoal text-lg mb-1">{item.title}</h3>
+                        <p className="text-sm text-gray-600 mb-3">{item.brand}</p>
+                      </div>
+                      <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
+                        {item.type}
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
                       {item.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="px-2 py-1 bg-accent rounded-full text-xs text-primary"
+                          className="px-3 py-1 bg-accent/50 rounded-full text-xs font-medium text-primary-dark"
                         >
                           {tag}
                         </span>
