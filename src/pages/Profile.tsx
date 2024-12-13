@@ -1,4 +1,4 @@
-import { User, Settings, History, Heart, Bell, BellOff, Filter } from "lucide-react";
+import { User, Upload, Settings, History, Heart, Bell, BellOff, Filter } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
@@ -55,7 +55,7 @@ const Profile = () => {
       <div className="max-w-lg mx-auto px-4 pt-8">
         {/* User Header */}
         <div className="flex items-center gap-4 mb-8">
-          <div className="relative">
+          <div className="relative group">
             <Avatar 
               className="h-16 w-16 cursor-pointer hover:opacity-80 transition-opacity"
               onClick={handleAvatarClick}
@@ -72,8 +72,8 @@ const Profile = () => {
               accept="image/*"
               onChange={handleFileChange}
             />
-            <div className="absolute bottom-0 right-0 bg-primary rounded-full p-1 cursor-pointer">
-              <User className="h-3 w-3 text-white" />
+            <div className="absolute bottom-0 right-0 bg-primary rounded-full p-1 cursor-pointer group-hover:scale-110 transition-transform">
+              <Upload className="h-3 w-3 text-white" />
             </div>
           </div>
           <div>
