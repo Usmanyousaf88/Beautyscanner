@@ -61,7 +61,7 @@ const RewardCard = ({
                     </Button>
                   </div>
                 </TooltipTrigger>
-                <TooltipContent>
+                <TooltipContent className="bg-white">
                   {disabled && !isRedeeming ? 'Not enough points for this reward' : 'Click to redeem this reward'}
                 </TooltipContent>
               </Tooltip>
