@@ -1,5 +1,4 @@
 import { Award } from "lucide-react";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -38,7 +37,7 @@ const MilestoneCard = ({
                   />
                 </div>
               </TooltipTrigger>
-              <TooltipContent>
+              <TooltipContent className="bg-white">
                 <p className="text-sm">Click for more details</p>
               </TooltipContent>
             </Tooltip>
