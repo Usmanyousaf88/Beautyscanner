@@ -70,20 +70,12 @@ const Index = () => {
         title: "Quick Tip",
         description: "Try scanning your favorite moisturizer to learn more about its ingredients!",
         duration: 3000,
-        className: "w-[200px] bottom-16 right-4 fixed text-sm [&>div]:flex [&>div]:flex-col [&>div]:gap-1 animate-in fade-in duration-200 [&>button]:hidden", // Added [&>button]:hidden to hide close button
+        className: "w-[200px] bottom-16 right-4 fixed text-sm [&>div]:flex [&>div]:flex-col [&>div]:gap-1 animate-in fade-in duration-200 [&>button]:hidden",
       });
     }, 1000);
 
     return () => clearTimeout(showTip);
   }, [toast]);
-
-  const handleSearchFocus = () => {
-    toast({
-      title: "Search Products",
-      description: "Type any product name or ingredient to get started",
-      duration: 3000,
-    });
-  };
 
   return (
     <div className="min-h-screen bg-cream">
@@ -98,55 +90,8 @@ const Index = () => {
             type="search"
             placeholder="Search products or ingredients..."
             className="w-full px-4 py-3 pl-12 rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors"
-            onFocus={handleSearchFocus}
           />
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-        </div>
-
-        <div className="space-y-4 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-          <Link
-            to="/scan"
-            className="block p-5 sm:p-6 bg-primary rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg group"
-          >
-            <div className="flex items-center">
-              <div className="p-2.5 sm:p-3 bg-white/20 rounded-full group-hover:scale-110 transition-transform">
-                <Scan 
-                  size={28} 
-                  className="text-white drop-shadow-[0_2px_2px_rgba(255,255,255,0.3)]" 
-                />
-              </div>
-              <div className="ml-4">
-                <h2 className="text-xl sm:text-2xl font-semibold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)] mb-1">
-                  Scan Product
-                </h2>
-                <p className="text-sm sm:text-base text-white/90 drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">
-                  Analyze ingredients instantly
-                </p>
-              </div>
-            </div>
-          </Link>
-
-          <Link
-            to="/search"
-            className="block p-5 sm:p-6 bg-primary rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg group"
-          >
-            <div className="flex items-center">
-              <div className="p-2.5 sm:p-3 bg-white/20 rounded-full group-hover:scale-110 transition-transform">
-                <Search 
-                  size={28} 
-                  className="text-white drop-shadow-[0_2px_2px_rgba(255,255,255,0.3)]" 
-                />
-              </div>
-              <div className="ml-4">
-                <h2 className="text-xl sm:text-2xl font-semibold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)] mb-1">
-                  Search Ingredients
-                </h2>
-                <p className="text-sm sm:text-base text-white/90 drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">
-                  Learn about ingredients
-                </p>
-              </div>
-            </div>
-          </Link>
         </div>
 
         <QuickActions />
