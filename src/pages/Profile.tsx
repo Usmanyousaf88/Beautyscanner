@@ -7,11 +7,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { useState, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Profile = () => {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const isMobile = useIsMobile();
 
   const handleAvatarClick = () => {
     fileInputRef.current?.click();
@@ -20,7 +22,7 @@ const Profile = () => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      if (file.size > 5 * 1024 * 1024) {
         toast({
           title: "File too large",
           description: "Please select an image under 5MB",
@@ -64,7 +66,7 @@ const Profile = () => {
               <AvatarFallback>
                 <User className="h-8 w-8" />
               </AvatarFallback>
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-50 rounded-full">
+              <div className={`absolute inset-0 flex items-center justify-center ${isMobile ? 'opacity-100 bg-black bg-opacity-30' : 'opacity-0 group-hover:opacity-100 bg-black bg-opacity-50'} transition-opacity duration-300 rounded-full`}>
                 <Upload className="h-6 w-6 text-white" />
               </div>
             </Avatar>
