@@ -69,10 +69,10 @@ const Index = () => {
       toast({
         title: "Quick Tip",
         description: "Try scanning your favorite moisturizer to learn more about its ingredients!",
-        duration: 3000,
+        duration: 10000,
         className: "w-[200px] bottom-16 right-4 fixed text-sm [&>div]:flex [&>div]:flex-col [&>div]:gap-1 animate-in fade-in duration-200 [&>button]:hidden",
       });
-    }, 1000);
+    }, 900000); // 15 minutes
 
     return () => clearTimeout(showTip);
   }, [toast]);
