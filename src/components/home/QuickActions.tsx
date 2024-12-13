@@ -11,11 +11,11 @@ const QuickActions = () => {
       <div className="flex flex-col gap-4">
         <Link
           to="/scan"
-          className="p-8 bg-gradient-to-r from-primary to-primary-light rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-[1.02] group"
+          className="p-8 bg-gradient-to-r from-[#2E8B57] to-[#3CB371] rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-[1.02] group"
         >
           <div className="flex items-center gap-6">
             <div className="bg-white/90 p-4 rounded-full transition-transform group-hover:scale-110">
-              <Scan className="h-12 w-12 text-primary shrink-0" />
+              <Scan className="h-12 w-12 text-[#2E8B57] shrink-0" />
             </div>
             <div className="text-left">
               <span className="text-xl font-bold text-white block mb-2">Scan Product</span>
