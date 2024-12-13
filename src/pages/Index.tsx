@@ -1,11 +1,47 @@
 import React from "react";
-import { Scan, Search, Leaf } from "lucide-react";
+import { Scan, Search, Leaf, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import Navigation from "@/components/Navigation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useQuery } from "@tanstack/react-query";
+
+// Mock function to simulate fetching recommendations
+const fetchRecommendations = async () => {
+  // This would be replaced with actual API call
+  return [
+    {
+      id: 1,
+      title: "Natural Moisturizer",
+      brand: "EcoBeauty",
+      type: "moisturizer",
+      tags: ["vegan", "paraben-free"],
+    },
+    {
+      id: 2,
+      title: "Organic Cleanser",
+      brand: "PureNature",
+      type: "cleanser",
+      tags: ["organic", "cruelty-free"],
+    },
+    {
+      id: 3,
+      title: "Vitamin C Serum",
+      brand: "GreenGlow",
+      type: "serum",
+      tags: ["vegan", "natural"],
+    },
+  ];
+};
 
 const Index = () => {
   const { toast } = useToast();
+
+  const { data: recommendations } = useQuery({
+    queryKey: ['recommendations'],
+    queryFn: fetchRecommendations,
+  });
 
   // Show welcome tip when component mounts
   React.useEffect(() => {
@@ -78,7 +114,42 @@ const Index = () => {
           </Link>
         </div>
 
-        <div className="mt-12 p-6 bg-accent rounded-xl animate-fade-in hover:shadow-lg transition-all duration-300" style={{ animationDelay: "0.3s" }}>
+        {/* Recommendations Section */}
+        <Card className="mt-8 animate-fade-in" style={{ animationDelay: "0.3s" }}>
+          <CardHeader className="flex flex-row items-center space-y-0">
+            <CardTitle className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-primary" />
+              Recommended for You
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ScrollArea className="h-[200px] rounded-md">
+              <div className="space-y-4">
+                {recommendations?.map((item) => (
+                  <div
+                    key={item.id}
+                    className="p-4 bg-white rounded-lg border border-gray-100 hover:border-primary transition-colors"
+                  >
+                    <h3 className="font-medium text-charcoal">{item.title}</h3>
+                    <p className="text-sm text-gray-600">{item.brand}</p>
+                    <div className="flex gap-2 mt-2">
+                      {item.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2 py-1 bg-accent rounded-full text-xs text-primary"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </ScrollArea>
+          </CardContent>
+        </Card>
+
+        <div className="mt-12 p-6 bg-accent rounded-xl animate-fade-in hover:shadow-lg transition-all duration-300" style={{ animationDelay: "0.4s" }}>
           <h3 className="text-xl font-semibold text-charcoal mb-3 flex items-center">
             <Leaf className="mr-2 text-primary" size={20} />
             Daily Tip
