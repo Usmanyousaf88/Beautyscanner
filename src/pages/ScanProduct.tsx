@@ -68,7 +68,9 @@ const ScanProduct = () => {
     
     const track = stream.getVideoTracks()[0];
     try {
-      const constraints = {
+      // Using 'any' type to bypass TypeScript constraints since 'torch' is a valid
+      // constraint in modern browsers but not yet in TypeScript's types
+      const constraints: any = {
         advanced: [{ torch: !isFlashOn }]
       };
       
