@@ -6,6 +6,13 @@ import { useToast } from "@/hooks/use-toast";
 import CameraControls from "@/components/scanner/CameraControls";
 import ScanningFrame from "@/components/scanner/ScanningFrame";
 
+// Add type definition for ImageCapture
+declare global {
+  interface Window {
+    ImageCapture: any;
+  }
+}
+
 const ScanProduct = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -61,19 +68,19 @@ const ScanProduct = () => {
     
     const track = stream.getVideoTracks()[0];
     try {
-      // Use the ImageCapture API to control the torch
-      const imageCapture = new ImageCapture(track);
-      const photoCapabilities = await imageCapture.getPhotoCapabilities();
+      const constraints = {
+        advanced: [{ torch: !isFlashOn }]
+      };
       
-      if (photoCapabilities.fillLightMode?.includes('flash')) {
-        const newFlashState = !isFlashOn;
-        await track.applyConstraints({
-          advanced: [{ fillLightMode: newFlashState ? 'flash' : 'none' }]
-        });
-        setIsFlashOn(newFlashState);
-      }
+      await track.applyConstraints(constraints);
+      setIsFlashOn(!isFlashOn);
     } catch (error) {
       console.error("Error toggling flash:", error);
+      toast({
+        title: "Flash Error",
+        description: "Unable to control flash. This device might not support flash control.",
+        variant: "destructive"
+      });
     }
   };
 
