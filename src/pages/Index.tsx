@@ -1,5 +1,5 @@
 import React from "react";
-import { Scan, Search } from "lucide-react";
+import { Scan, Search, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import Navigation from "@/components/Navigation";
