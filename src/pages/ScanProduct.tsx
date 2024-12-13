@@ -1,15 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { 
-  ArrowLeft, 
-  MoreVertical, 
-  Zap, 
-  Image as ImageIcon, 
-  FlipCamera2,
-  Camera
-} from "lucide-react";
+import { ArrowLeft, MoreVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import CameraControls from "@/components/scanner/CameraControls";
+import ScanningFrame from "@/components/scanner/ScanningFrame";
 
 const ScanProduct = () => {
   const navigate = useNavigate();
@@ -65,14 +60,20 @@ const ScanProduct = () => {
     if (!stream) return;
     
     const track = stream.getVideoTracks()[0];
-    const capabilities = track.getCapabilities();
-    
-    if ('torch' in capabilities) {
-      const newFlashState = !isFlashOn;
-      await track.applyConstraints({
-        advanced: [{ torch: newFlashState }]
-      });
-      setIsFlashOn(newFlashState);
+    try {
+      // Use the ImageCapture API to control the torch
+      const imageCapture = new ImageCapture(track);
+      const photoCapabilities = await imageCapture.getPhotoCapabilities();
+      
+      if (photoCapabilities.fillLightMode?.includes('flash')) {
+        const newFlashState = !isFlashOn;
+        await track.applyConstraints({
+          advanced: [{ fillLightMode: newFlashState ? 'flash' : 'none' }]
+        });
+        setIsFlashOn(newFlashState);
+      }
+    } catch (error) {
+      console.error("Error toggling flash:", error);
     }
   };
 
@@ -81,7 +82,6 @@ const ScanProduct = () => {
   };
 
   const handleCapture = () => {
-    // Add capture logic here
     toast({
       title: "Product Captured",
       description: "Analyzing ingredients...",
@@ -91,7 +91,6 @@ const ScanProduct = () => {
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // Handle file upload logic here
       toast({
         title: "Image Uploaded",
         description: "Analyzing ingredients...",
@@ -101,7 +100,6 @@ const ScanProduct = () => {
 
   return (
     <div className="fixed inset-0 bg-black">
-      {/* Camera Feed */}
       <video
         ref={videoRef}
         autoPlay
@@ -109,9 +107,7 @@ const ScanProduct = () => {
         className="h-full w-full object-cover"
       />
 
-      {/* Overlay */}
       <div className="absolute inset-0 flex flex-col">
-        {/* Header */}
         <div className="flex items-center justify-between p-4 bg-gradient-to-b from-black/50 to-transparent">
           <Button
             variant="ghost"
@@ -131,76 +127,16 @@ const ScanProduct = () => {
           </Button>
         </div>
 
-        {/* Scanning Frame */}
-        <div className="flex-1 flex items-center justify-center p-4">
-          <div className="w-full max-w-sm aspect-[3/4] border-2 border-white/30 rounded-lg relative">
-            <div className="absolute inset-0 border-[16px] border-white/10 rounded-lg" />
-            <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-white" />
-            <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-white" />
-            <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-white" />
-            <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-white" />
-          </div>
-        </div>
+        <ScanningFrame />
 
-        {/* Bottom Controls */}
-        <div className="p-4 bg-gradient-to-t from-black/50 to-transparent">
-          <div className="flex items-center justify-around mb-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-white/20"
-              onClick={toggleFlash}
-              disabled={!hasFlash}
-            >
-              <Zap className={`h-6 w-6 ${isFlashOn ? 'text-primary' : 'text-white'}`} />
-            </Button>
-            
-            {/* Capture Button */}
-            <Button
-              variant="outline"
-              size="icon"
-              className="h-16 w-16 rounded-full border-4 border-white bg-white/10 hover:bg-white/20 animate-pulse"
-              onClick={handleCapture}
-            >
-              <Camera className="h-8 w-8 text-white" />
-            </Button>
-
-            <label className="cursor-pointer">
-              <input
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleFileUpload}
-              />
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-white hover:bg-white/20"
-                type="button"
-              >
-                <ImageIcon className="h-6 w-6" />
-              </Button>
-            </label>
-          </div>
-
-          {/* Action Bar */}
-          <div className="flex items-center justify-center gap-8 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full">
-            <Button
-              variant="ghost"
-              className="text-white hover:bg-white/20 text-sm gap-2"
-            >
-              <Camera className="h-4 w-4" />
-              Scan food
-            </Button>
-            <Button
-              variant="ghost"
-              className="text-white hover:bg-white/20"
-              onClick={toggleCamera}
-            >
-              <FlipCamera2 className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
+        <CameraControls
+          hasFlash={hasFlash}
+          isFlashOn={isFlashOn}
+          onFlashToggle={toggleFlash}
+          onCameraSwitch={toggleCamera}
+          onCapture={handleCapture}
+          onFileUpload={handleFileUpload}
+        />
       </div>
     </div>
   );
