@@ -6,6 +6,8 @@ import MilestoneCard from "@/components/rewards/MilestoneCard";
 import ChallengeCard from "@/components/rewards/ChallengeCard";
 import RewardCard from "@/components/rewards/RewardCard";
 import ShareButton from "@/components/social/ShareButton";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import confetti from 'canvas-confetti';
 
 const initialMilestones = [
   {
@@ -104,29 +106,57 @@ const Rewards = () => {
   const [totalPoints, setTotalPoints] = useState(150);
   const [milestones, setMilestones] = useState(initialMilestones);
   const [redeemingId, setRedeemingId] = useState<number | null>(null);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [redeemedReward, setRedeemedReward] = useState<{title: string, points: number} | null>(null);
+  const [redeemedRewards, setRedeemedRewards] = useState<Array<{title: string, points: number, date: Date}>>([]);
+
+  const triggerConfetti = () => {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+  };
 
   const handleRedeem = async (rewardPoints: number, rewardTitle: string, rewardId: number) => {
     if (totalPoints >= rewardPoints) {
       setRedeemingId(rewardId);
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      setTotalPoints(prev => prev - rewardPoints);
-      
-      // Update milestone progress
-      setMilestones(prev => 
-        prev.map(milestone => ({
-          ...milestone,
-          progress: Math.min(
-            milestone.total,
-            milestone.progress + Math.ceil(rewardPoints / 100)
-          )
-        }))
-      );
+      try {
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        setTotalPoints(prev => prev - rewardPoints);
+        
+        // Update milestone progress
+        setMilestones(prev => 
+          prev.map(milestone => ({
+            ...milestone,
+            progress: Math.min(
+              milestone.total,
+              milestone.progress + Math.ceil(rewardPoints / 100)
+            )
+          }))
+        );
 
-      toast.success(`Successfully redeemed: ${rewardTitle}`);
-      setRedeemingId(null);
+        // Add to redeemed rewards
+        setRedeemedRewards(prev => [...prev, {
+          title: rewardTitle,
+          points: rewardPoints,
+          date: new Date()
+        }]);
+
+        // Show success dialog
+        setRedeemedReward({ title: rewardTitle, points: rewardPoints });
+        setShowSuccessDialog(true);
+        triggerConfetti();
+
+        toast.success(`Successfully redeemed: ${rewardTitle}`);
+      } catch (error) {
+        toast.error("Failed to redeem reward. Please try again.");
+      } finally {
+        setRedeemingId(null);
+      }
     } else {
       toast.error("Not enough points to redeem this reward");
     }
@@ -183,7 +213,50 @@ const Rewards = () => {
             />
           ))}
         </div>
+
+        {/* Redeemed Rewards Section */}
+        {redeemedRewards.length > 0 && (
+          <>
+            <h2 className="font-semibold text-charcoal mb-4">Redeemed Rewards</h2>
+            <div className="space-y-4 mb-8">
+              {redeemedRewards.map((reward, index) => (
+                <Card key={index} className="p-4 bg-gray-50">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h3 className="font-medium text-charcoal">{reward.title}</h3>
+                      <p className="text-sm text-gray-500">
+                        Redeemed on {reward.date.toLocaleDateString()}
+                      </p>
+                    </div>
+                    <span className="text-primary font-medium">-{reward.points} points</span>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </>
+        )}
       </div>
+
+      {/* Success Dialog */}
+      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Reward Redeemed Successfully! 🎉</DialogTitle>
+            <DialogDescription>
+              <div className="py-4">
+                <p>You have successfully redeemed:</p>
+                <p className="font-medium text-primary mt-2">{redeemedReward?.title}</p>
+                <p className="text-sm text-gray-500 mt-1">-{redeemedReward?.points} points</p>
+              </div>
+              <ShareButton 
+                title="I just redeemed a reward on GreenBeauty!"
+                text={`I just redeemed ${redeemedReward?.title} on GreenBeauty! Join me in making sustainable beauty choices.`}
+              />
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+
       <Navigation />
     </div>
   );
