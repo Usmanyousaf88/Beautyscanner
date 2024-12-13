@@ -22,8 +22,6 @@ const MilestoneCard = ({
   total,
   icon,
   points,
-  nextLevel,
-  howToEarn,
 }: MilestoneProps) => (
   <HoverCard>
     <HoverCardTrigger asChild>
@@ -59,9 +57,7 @@ const MilestoneCard = ({
     </HoverCardTrigger>
     <HoverCardContent className="w-80 p-4">
       <div className="space-y-3">
-        <h4 className="font-semibold text-lg text-primary">Next Level: {nextLevel}</h4>
-        <p className="text-sm text-gray-600">{howToEarn}</p>
-        <div className="mt-3 pt-2 border-t">
+        <div className="mt-3">
           <div className="flex justify-between items-center">
             <p className="text-sm font-medium">Current Progress</p>
             <p className="text-sm text-primary font-bold">
