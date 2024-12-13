@@ -65,21 +65,28 @@ const CameraControls = ({
         </label>
       </div>
 
-      <div className="flex items-center justify-center gap-2 px-6 py-3 mx-4 bg-accent/90 backdrop-blur-sm rounded-full shadow-md">
+      <div className="relative flex items-center justify-center gap-2 px-6 py-3 mx-4 bg-accent/90 backdrop-blur-sm rounded-full shadow-md overflow-hidden">
+        {/* Sliding background indicator */}
+        <div
+          className={`absolute h-full w-[calc(50%-0.5px)] top-0 bg-accent-dark/20 rounded-full transition-transform duration-300 ease-out ${
+            mode === 'photo' ? 'translate-x-[calc(100%+1px)]' : 'translate-x-0'
+          }`}
+        />
+        
         <Button
           variant="ghost"
-          className={`text-charcoal hover:bg-accent-dark/30 active:scale-95 transition-transform text-sm gap-2 font-medium ${mode === 'scan' ? 'bg-accent-dark/20' : ''}`}
+          className="relative flex-1 text-charcoal hover:bg-transparent active:scale-95 transition-transform text-sm gap-2 font-medium z-10"
           onClick={() => setMode('scan')}
         >
           <Barcode className="h-4 w-4" />
           Scan product
         </Button>
         
-        <div className="h-4 w-[1px] bg-charcoal/20" />
+        <div className="h-8 w-[1px] bg-charcoal/20 z-10" />
         
         <Button
           variant="ghost"
-          className={`text-charcoal hover:bg-accent-dark/30 active:scale-95 transition-transform text-sm gap-2 ${mode === 'photo' ? 'bg-accent-dark/20' : ''}`}
+          className="relative flex-1 text-charcoal hover:bg-transparent active:scale-95 transition-transform text-sm gap-2 z-10"
           onClick={() => setMode('photo')}
         >
           <Camera className="h-4 w-4" />
