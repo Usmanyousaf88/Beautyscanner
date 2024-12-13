@@ -17,9 +17,9 @@ const QuickActions = () => {
             <div className="bg-white/90 p-4 rounded-full transition-transform group-hover:scale-110">
               <Scan className="h-12 w-12 text-primary shrink-0" />
             </div>
-            <div className="text-left">
-              <span className="text-xl font-bold text-white block mb-2">Scan Product</span>
-              <span className="text-white/90 text-base">Check ingredients instantly</span>
+            <div className="text-left flex items-center gap-2">
+              <span className="text-xl font-bold text-white">Scan Product</span>
+              <span className="text-white/90 text-base">- Check Ingredients Instantly</span>
             </div>
           </div>
         </Link>
