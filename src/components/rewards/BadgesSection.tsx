@@ -52,8 +52,8 @@ const badges: Badge[] = [
 const BadgesSection = () => {
   return (
     <div className="mb-8">
-      <h2 className="font-semibold text-charcoal mb-4 text-lg">Your Badges</h2>
-      <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
+      <h2 className="font-semibold text-charcoal mb-6 text-xl">Your Badges</h2>
+      <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 scrollbar-thin hover:scrollbar-thumb-primary/40 scrollbar-thumb-primary/20 scrollbar-track-transparent">
         {badges.map((badge) => (
           <MilestoneCard key={badge.id} {...badge} />
         ))}
