@@ -86,17 +86,17 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-cream">
-      <div className="max-w-lg mx-auto px-4 pt-8 pb-20">
-        <header className="text-center mb-12 animate-fade-in">
-          <h1 className="text-4xl font-bold text-charcoal mb-3">GreenBeauty</h1>
-          <p className="text-lg text-gray-600">Make conscious beauty choices</p>
+      <div className="max-w-lg mx-auto px-4 pt-6 pb-24 sm:pt-8">
+        <header className="text-center mb-8 sm:mb-12 animate-fade-in">
+          <h1 className="text-3xl sm:text-4xl font-bold text-charcoal mb-2 sm:mb-3">GreenBeauty</h1>
+          <p className="text-base sm:text-lg text-gray-600">Make conscious beauty choices</p>
         </header>
 
-        <div className="relative mb-8 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+        <div className="relative mb-6 sm:mb-8 animate-fade-in" style={{ animationDelay: "0.1s" }}>
           <input
             type="search"
             placeholder="Search products or ingredients..."
-            className="w-full px-4 py-3.5 pl-12 rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors"
+            className="w-full px-4 py-3 pl-12 rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none transition-colors"
             onFocus={handleSearchFocus}
           />
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -105,20 +105,20 @@ const Index = () => {
         <div className="space-y-4 animate-fade-in" style={{ animationDelay: "0.2s" }}>
           <Link
             to="/scan"
-            className="block p-6 bg-primary rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg group"
+            className="block p-5 sm:p-6 bg-primary rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg group"
           >
             <div className="flex items-center">
-              <div className="p-3 bg-white/20 rounded-full group-hover:scale-110 transition-transform">
+              <div className="p-2.5 sm:p-3 bg-white/20 rounded-full group-hover:scale-110 transition-transform">
                 <Scan 
-                  size={32} 
+                  size={28} 
                   className="text-white drop-shadow-[0_2px_2px_rgba(255,255,255,0.3)]" 
                 />
               </div>
               <div className="ml-4">
-                <h2 className="text-2xl font-semibold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)] mb-1">
+                <h2 className="text-xl sm:text-2xl font-semibold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)] mb-1">
                   Scan Product
                 </h2>
-                <p className="text-white/90 text-sm drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">
+                <p className="text-sm sm:text-base text-white/90 drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">
                   Analyze ingredients instantly
                 </p>
               </div>
@@ -127,20 +127,20 @@ const Index = () => {
 
           <Link
             to="/search"
-            className="block p-6 bg-primary rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg group"
+            className="block p-5 sm:p-6 bg-primary rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg group"
           >
             <div className="flex items-center">
-              <div className="p-3 bg-white/20 rounded-full group-hover:scale-110 transition-transform">
+              <div className="p-2.5 sm:p-3 bg-white/20 rounded-full group-hover:scale-110 transition-transform">
                 <Search 
-                  size={32} 
+                  size={28} 
                   className="text-white drop-shadow-[0_2px_2px_rgba(255,255,255,0.3)]" 
                 />
               </div>
               <div className="ml-4">
-                <h2 className="text-2xl font-semibold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)] mb-1">
+                <h2 className="text-xl sm:text-2xl font-semibold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)] mb-1">
                   Search Ingredients
                 </h2>
-                <p className="text-white/90 text-sm drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">
+                <p className="text-sm sm:text-base text-white/90 drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">
                   Learn about ingredients
                 </p>
               </div>
