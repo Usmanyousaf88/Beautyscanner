@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import MilestoneCard from "@/components/rewards/MilestoneCard";
 import ChallengeCard from "@/components/rewards/ChallengeCard";
 import RewardCard from "@/components/rewards/RewardCard";
-import CommunityForum from "@/components/social/CommunityForum";
 import ShareButton from "@/components/social/ShareButton";
 
 const initialMilestones = [
@@ -173,9 +172,6 @@ const Rewards = () => {
             />
           ))}
         </div>
-
-        {/* Community Forum Section */}
-        <CommunityForum />
       </div>
       <Navigation />
     </div>
