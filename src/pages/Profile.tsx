@@ -41,13 +41,44 @@ const Profile = () => {
         return;
       }
 
+      const img = new Image();
       const reader = new FileReader();
+
       reader.onload = (e) => {
-        setAvatarUrl(e.target?.result as string);
-        toast({
-          title: "Photo updated",
-          description: "Your profile photo has been updated successfully",
-        });
+        img.src = e.target?.result as string;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          
+          // Set canvas dimensions to match desired avatar size while maintaining aspect ratio
+          const size = 400; // Target size for the avatar
+          const scale = Math.min(size / img.width, size / img.height);
+          canvas.width = size;
+          canvas.height = size;
+          
+          if (ctx) {
+            // Fill the canvas with a white background to handle transparent images
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Calculate dimensions to maintain aspect ratio and center the image
+            const scaledWidth = img.width * scale;
+            const scaledHeight = img.height * scale;
+            const x = (size - scaledWidth) / 2;
+            const y = (size - scaledHeight) / 2;
+            
+            // Draw the image centered and scaled
+            ctx.drawImage(img, x, y, scaledWidth, scaledHeight);
+            
+            // Convert to base64 and set as avatar
+            const resizedImage = canvas.toDataURL('image/jpeg', 0.9);
+            setAvatarUrl(resizedImage);
+            toast({
+              title: "Photo updated",
+              description: "Your profile photo has been updated successfully",
+            });
+          }
+        };
       };
       reader.readAsDataURL(file);
     }
@@ -64,13 +95,19 @@ const Profile = () => {
               className="h-24 w-24 sm:h-20 sm:w-20 cursor-pointer hover:opacity-90 transition-opacity"
               onClick={handleAvatarClick}
             >
-              <AvatarImage src={avatarUrl || "/placeholder.svg"} />
+              <AvatarImage 
+                src={avatarUrl || "/placeholder.svg"} 
+                className="object-cover"
+                alt="Profile picture"
+              />
               <AvatarFallback>
                 <User className="h-10 w-10 sm:h-8 sm:w-8" />
               </AvatarFallback>
-              <div className={`absolute inset-0 flex items-center justify-center ${isMobile ? 'opacity-100 bg-black bg-opacity-30' : 'opacity-0 group-hover:opacity-100 bg-black bg-opacity-50'} transition-opacity duration-300 rounded-full`}>
-                <Upload className="h-8 w-8 sm:h-6 sm:w-6 text-white" />
-              </div>
+              {!avatarUrl && (
+                <div className={`absolute inset-0 flex items-center justify-center ${isMobile ? 'opacity-100 bg-black bg-opacity-30' : 'opacity-0 group-hover:opacity-100 bg-black bg-opacity-50'} transition-opacity duration-300 rounded-full`}>
+                  <Upload className="h-8 w-8 sm:h-6 sm:w-6 text-white" />
+                </div>
+              )}
             </Avatar>
             <input
               type="file"
