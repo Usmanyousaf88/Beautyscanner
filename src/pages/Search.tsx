@@ -233,7 +233,6 @@ const Search = () => {
               </div>
             </ScrollArea>
 
-            {/* Add Community Forum below the ingredients list */}
             <div className="mt-8">
               <CommunityForum />
             </div>
