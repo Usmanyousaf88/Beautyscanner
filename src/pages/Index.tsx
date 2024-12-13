@@ -1,10 +1,11 @@
 import React from "react";
-import { Scan, Search, Bookmark, Clock, Sparkles, Leaf } from "lucide-react";
+import { Scan, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import Navigation from "@/components/Navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import QuickActions from "@/components/home/QuickActions";
+import RecentActivity from "@/components/home/RecentActivity";
+import Recommendations from "@/components/home/Recommendations";
 import { useQuery } from "@tanstack/react-query";
 
 // Mock function to simulate fetching recommendations
@@ -63,7 +64,6 @@ const Index = () => {
     queryFn: fetchRecentActivity,
   });
 
-  // Show welcome tip when component mounts
   React.useEffect(() => {
     const showTip = setTimeout(() => {
       toast({
@@ -148,127 +148,11 @@ const Index = () => {
           </Link>
         </div>
 
-        {/* Quick Actions Section */}
-        <div className="mt-8 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-          <h2 className="text-xl font-semibold text-charcoal mb-4 flex items-center gap-2">
-            Quick Actions
-          </h2>
-          <div className="grid grid-cols-2 gap-4">
-            <Link
-              to="/bookmarks"
-              className="p-4 bg-secondary rounded-xl transition-all duration-300 hover:shadow-md flex flex-col items-center text-center"
-            >
-              <Bookmark className="h-8 w-8 mb-2 text-primary" />
-              <span className="text-sm font-medium text-charcoal">Saved Items</span>
-            </Link>
-            <Link
-              to="/search?popular=true"
-              className="p-4 bg-accent rounded-xl transition-all duration-300 hover:shadow-md flex flex-col items-center text-center"
-            >
-              <Search className="h-8 w-8 mb-2 text-primary" />
-              <span className="text-sm font-medium text-charcoal">Popular Ingredients</span>
-            </Link>
-          </div>
-        </div>
-
-        {/* Recent Activity Section */}
-        {recentActivity && (
-          <Card className="mt-8 animate-fade-in bg-white/50 backdrop-blur-sm" style={{ animationDelay: "0.4s" }}>
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-xl">
-                <Clock className="h-5 w-5 text-primary" />
-                Recent Activity
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {recentActivity.lastScan && (
-                  <Link to="/scan" className="block">
-                    <div className="p-4 bg-white rounded-lg border border-primary/10 hover:border-primary/30 transition-all">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className="font-medium text-charcoal">Last Scan</h3>
-                          <p className="text-sm text-gray-600">{recentActivity.lastScan.productName}</p>
-                        </div>
-                        <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
-                          Score: {recentActivity.lastScan.safetyScore}
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                )}
-                {recentActivity.recentSearches && recentActivity.recentSearches.length > 0 && (
-                  <div className="p-4 bg-white rounded-lg border border-primary/10">
-                    <h3 className="font-medium text-charcoal mb-2">Recent Searches</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {recentActivity.recentSearches.map((search, index) => (
-                        <Link
-                          key={index}
-                          to={`/search?q=${encodeURIComponent(search)}`}
-                          className="px-3 py-1 bg-accent/50 rounded-full text-xs font-medium text-primary-dark hover:bg-accent transition-colors"
-                        >
-                          {search}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Recommendations Section */}
-        <Card className="mt-8 animate-fade-in bg-white/50 backdrop-blur-sm" style={{ animationDelay: "0.5s" }}>
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-2 text-xl">
-              <Sparkles className="h-5 w-5 text-primary animate-pulse" />
-              Recommended for You
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ScrollArea className="h-[280px] pr-4">
-              <div className="grid gap-4">
-                {recommendations?.map((item) => (
-                  <div
-                    key={item.id}
-                    className="p-4 bg-white rounded-xl border border-primary/10 hover:border-primary/30 transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg"
-                  >
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="font-semibold text-charcoal text-lg mb-1">{item.title}</h3>
-                        <p className="text-sm text-gray-600 mb-3">{item.brand}</p>
-                      </div>
-                      <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
-                        {item.type}
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {item.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-3 py-1 bg-accent/50 rounded-full text-xs font-medium text-primary-dark"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </ScrollArea>
-          </CardContent>
-        </Card>
-
-        <div className="mt-12 p-6 bg-accent rounded-xl animate-fade-in hover:shadow-lg transition-all duration-300" style={{ animationDelay: "0.6s" }}>
-          <h3 className="text-xl font-semibold text-charcoal mb-3 flex items-center">
-            <Leaf className="mr-2 text-primary" size={20} />
-            Daily Tip
-          </h3>
-          <p className="text-gray-600 leading-relaxed">
-            Look for products with natural preservatives like neem oil or grapefruit seed extract instead of parabens.
-          </p>
-        </div>
+        <QuickActions />
+        
+        {recentActivity && <RecentActivity data={recentActivity} />}
+        
+        {recommendations && <Recommendations recommendations={recommendations} />}
       </div>
       
       <Navigation />
