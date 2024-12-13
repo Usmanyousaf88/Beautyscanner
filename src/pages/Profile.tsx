@@ -5,19 +5,77 @@ import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { useState, useRef } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const Profile = () => {
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
+
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        toast({
+          title: "File too large",
+          description: "Please select an image under 5MB",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: "Invalid file type",
+          description: "Please select an image file",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setAvatarUrl(e.target?.result as string);
+        toast({
+          title: "Photo updated",
+          description: "Your profile photo has been updated successfully",
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-cream pb-20">
       <div className="max-w-lg mx-auto px-4 pt-8">
         {/* User Header */}
         <div className="flex items-center gap-4 mb-8">
-          <Avatar className="h-16 w-16">
-            <AvatarImage src="/placeholder.svg" />
-            <AvatarFallback>
-              <User className="h-8 w-8" />
-            </AvatarFallback>
-          </Avatar>
+          <div className="relative">
+            <Avatar 
+              className="h-16 w-16 cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={handleAvatarClick}
+            >
+              <AvatarImage src={avatarUrl || "/placeholder.svg"} />
+              <AvatarFallback>
+                <User className="h-8 w-8" />
+              </AvatarFallback>
+            </Avatar>
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              accept="image/*"
+              onChange={handleFileChange}
+            />
+            <div className="absolute bottom-0 right-0 bg-primary rounded-full p-1 cursor-pointer">
+              <User className="h-3 w-3 text-white" />
+            </div>
+          </div>
           <div>
             <h1 className="text-2xl font-bold text-charcoal">Sarah Johnson</h1>
             <p className="text-gray-600">Eco-conscious beauty enthusiast</p>
