@@ -1,8 +1,14 @@
-import { Search as SearchIcon, AlertCircle, Check, X } from "lucide-react";
+import { Search as SearchIcon, AlertCircle, Check, X, Filter } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 interface Ingredient {
   name: string;
@@ -53,9 +59,15 @@ const popularIngredients: Ingredient[] = [
   }
 ];
 
+const categories = ["All", "Hydrator", "Preservative", "Vitamin", "Cleanser"];
+const safetyLevels = ["All", "Safe", "Moderate", "Toxic"];
+
 const Search = () => {
   const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedSafety, setSelectedSafety] = useState("All");
+  const [showFilters, setShowFilters] = useState(false);
 
   const getSafetyColor = (safety: string) => {
     switch (safety) {
@@ -75,19 +87,73 @@ const Search = () => {
     }
   };
 
+  const filteredIngredients = popularIngredients.filter(ingredient => {
+    const matchesSearch = ingredient.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === "All" || ingredient.category === selectedCategory;
+    const matchesSafety = selectedSafety === "All" || ingredient.safety === selectedSafety;
+    return matchesSearch && matchesCategory && matchesSafety;
+  });
+
   return (
     <div className="min-h-screen bg-cream pb-20">
       <div className="max-w-lg mx-auto px-4 pt-8">
-        <div className="relative mb-8">
-          <input
-            type="search"
-            placeholder="Search for ingredients..."
-            className="w-full px-4 py-3 pl-12 rounded-full border border-gray-200 focus:outline-none focus:border-primary"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <SearchIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+        <div className="flex items-center justify-between mb-4">
+          <div className="relative flex-1">
+            <input
+              type="search"
+              placeholder="Search for ingredients..."
+              className="w-full px-4 py-3 pl-12 rounded-full border border-gray-200 focus:outline-none focus:border-primary"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <SearchIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+          </div>
+          <Button
+            variant="outline"
+            size="icon"
+            className="ml-2"
+            onClick={() => setShowFilters(!showFilters)}
+          >
+            <Filter className={`h-4 w-4 ${showFilters ? 'text-primary' : ''}`} />
+          </Button>
         </div>
+
+        <Collapsible open={showFilters} className="mb-4">
+          <CollapsibleContent className="space-y-4">
+            <div>
+              <h3 className="text-sm font-medium mb-2">Category</h3>
+              <div className="flex flex-wrap gap-2">
+                {categories.map((category) => (
+                  <Button
+                    key={category}
+                    variant={selectedCategory === category ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedCategory(category)}
+                    className="text-sm"
+                  >
+                    {category}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h3 className="text-sm font-medium mb-2">Safety Level</h3>
+              <div className="flex flex-wrap gap-2">
+                {safetyLevels.map((safety) => (
+                  <Button
+                    key={safety}
+                    variant={selectedSafety === safety ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedSafety(safety)}
+                    className="text-sm"
+                  >
+                    {safety}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
 
         {selectedIngredient ? (
           <div className="animate-fade-in">
@@ -141,31 +207,29 @@ const Search = () => {
           </div>
         ) : (
           <>
-            <h2 className="text-xl font-semibold text-charcoal mb-4">Popular Ingredients</h2>
+            <h2 className="text-xl font-semibold text-charcoal mb-4">
+              {filteredIngredients.length} Ingredients Found
+            </h2>
             <ScrollArea className="h-[calc(100vh-200px)]">
               <div className="grid gap-4">
-                {popularIngredients
-                  .filter(ingredient => 
-                    ingredient.name.toLowerCase().includes(searchQuery.toLowerCase())
-                  )
-                  .map((ingredient) => (
-                    <div
-                      key={ingredient.name}
-                      className="bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-                      onClick={() => setSelectedIngredient(ingredient)}
-                    >
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <h3 className="font-semibold text-charcoal">{ingredient.name}</h3>
-                          <span className="text-sm text-gray-600">{ingredient.category}</span>
-                        </div>
-                        <span className={`px-3 py-1 rounded-full flex items-center gap-2 ${getSafetyColor(ingredient.safety)}`}>
-                          {getSafetyIcon(ingredient.safety)}
-                          {ingredient.safety}
-                        </span>
+                {filteredIngredients.map((ingredient) => (
+                  <div
+                    key={ingredient.name}
+                    className="bg-white p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+                    onClick={() => setSelectedIngredient(ingredient)}
+                  >
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <h3 className="font-semibold text-charcoal">{ingredient.name}</h3>
+                        <span className="text-sm text-gray-600">{ingredient.category}</span>
                       </div>
+                      <span className={`px-3 py-1 rounded-full flex items-center gap-2 ${getSafetyColor(ingredient.safety)}`}>
+                        {getSafetyIcon(ingredient.safety)}
+                        {ingredient.safety}
+                      </span>
                     </div>
-                  ))}
+                  </div>
+                ))}
               </div>
             </ScrollArea>
           </>
