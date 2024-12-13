@@ -5,10 +5,10 @@ import { toast } from "sonner";
 import MilestoneCard from "@/components/rewards/MilestoneCard";
 import ChallengeCard from "@/components/rewards/ChallengeCard";
 import RewardCard from "@/components/rewards/RewardCard";
-import ShareButton from "@/components/social/ShareButton";
+import PointsDisplay from "@/components/rewards/PointsDisplay";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import confetti from 'canvas-confetti';
-import { Card } from "@/components/ui/card";  // Add this import at the top of the file
+import { Card } from "@/components/ui/card";
 
 const initialMilestones = [
   {
@@ -124,12 +124,8 @@ const Rewards = () => {
       setRedeemingId(rewardId);
       
       try {
-        // Simulate API call
         await new Promise(resolve => setTimeout(resolve, 1500));
-        
         setTotalPoints(prev => prev - rewardPoints);
-        
-        // Update milestone progress
         setMilestones(prev => 
           prev.map(milestone => ({
             ...milestone,
@@ -139,19 +135,14 @@ const Rewards = () => {
             )
           }))
         );
-
-        // Add to redeemed rewards
         setRedeemedRewards(prev => [...prev, {
           title: rewardTitle,
           points: rewardPoints,
           date: new Date()
         }]);
-
-        // Show success dialog
         setRedeemedReward({ title: rewardTitle, points: rewardPoints });
         setShowSuccessDialog(true);
         triggerConfetti();
-
         toast.success(`Successfully redeemed: ${rewardTitle}`);
       } catch (error) {
         toast.error("Failed to redeem reward. Please try again.");
@@ -166,26 +157,7 @@ const Rewards = () => {
   return (
     <div className="min-h-screen bg-cream pb-20">
       <div className="max-w-lg mx-auto px-4 pt-8">
-        {/* Points Counter */}
-        <div className="text-center mb-8">
-          <div className="w-24 h-24 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Trophy size={40} className="text-accent-dark" />
-          </div>
-          <h1 className="text-2xl font-bold text-charcoal">Your Rewards</h1>
-          <div className="mt-4 bg-white rounded-xl p-6 shadow-sm">
-            <p className="text-lg text-gray-600">You have</p>
-            <p className="text-4xl font-bold text-primary animate-fade-in">
-              {totalPoints} points
-            </p>
-            <p className="text-sm text-gray-500 mt-2 mb-6">Keep going to earn more rewards!</p>
-            <div className="flex justify-center">
-              <ShareButton 
-                title="Check out my GreenBeauty rewards!"
-                text={`I've earned ${totalPoints} points on GreenBeauty! Join me in making sustainable beauty choices.`}
-              />
-            </div>
-          </div>
-        </div>
+        <PointsDisplay points={totalPoints} />
 
         {/* Milestones Section */}
         <h2 className="font-semibold text-charcoal mb-4">Your Badges</h2>
@@ -251,10 +223,6 @@ const Rewards = () => {
                 <p className="font-medium text-primary mt-2">{redeemedReward?.title}</p>
                 <p className="text-sm text-gray-500 mt-1">-{redeemedReward?.points} points</p>
               </div>
-              <ShareButton 
-                title="I just redeemed a reward on GreenBeauty!"
-                text={`I just redeemed ${redeemedReward?.title} on GreenBeauty! Join me in making sustainable beauty choices.`}
-              />
             </DialogDescription>
           </DialogHeader>
         </DialogContent>
