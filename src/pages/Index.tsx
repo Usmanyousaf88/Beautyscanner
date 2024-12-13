@@ -100,15 +100,15 @@ const Index = () => {
 
           <Link
             to="/search"
-            className="block p-6 bg-secondary rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg group"
+            className="block p-6 bg-green-600 rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg group"
           >
             <div className="flex items-center">
               <div className="p-3 bg-white rounded-full group-hover:scale-110 transition-transform">
                 <Search size={32} className="text-charcoal" />
               </div>
               <div className="ml-4">
-                <h2 className="text-2xl font-semibold text-charcoal mb-1">Search Ingredients</h2>
-                <p className="text-gray-600 text-sm">Learn about ingredients</p>
+                <h2 className="text-2xl font-semibold text-white mb-1">Search Ingredients</h2>
+                <p className="text-white/80 text-sm">Learn about ingredients</p>
               </div>
             </div>
           </Link>
