@@ -89,11 +89,18 @@ const Index = () => {
           >
             <div className="flex items-center">
               <div className="p-3 bg-white/20 rounded-full group-hover:scale-110 transition-transform">
-                <Scan size={32} className="text-white" />
+                <Scan 
+                  size={32} 
+                  className="text-white drop-shadow-[0_2px_2px_rgba(255,255,255,0.3)] hover:drop-shadow-[0_4px_4px_rgba(255,255,255,0.5)]" 
+                />
               </div>
               <div className="ml-4">
-                <h2 className="text-2xl font-semibold text-white mb-1">Scan Product</h2>
-                <p className="text-primary-light text-sm">Analyze ingredients instantly</p>
+                <h2 className="text-2xl font-semibold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)] mb-1">
+                  Scan Product
+                </h2>
+                <p className="text-primary-light text-sm drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">
+                  Analyze ingredients instantly
+                </p>
               </div>
             </div>
           </Link>
@@ -113,7 +120,9 @@ const Index = () => {
                 <h2 className="text-2xl font-semibold text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.25)] mb-1">
                   Search Ingredients
                 </h2>
-                <p className="text-primary-light text-sm">Learn about ingredients</p>
+                <p className="text-primary-light text-sm drop-shadow-[0_1px_1px_rgba(0,0,0,0.15)]">
+                  Learn about ingredients
+                </p>
               </div>
             </div>
           </Link>
