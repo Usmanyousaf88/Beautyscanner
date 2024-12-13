@@ -9,6 +9,7 @@ import Search from "./pages/Search";
 import Tips from "./pages/Tips";
 import Profile from "./pages/Profile";
 import Rewards from "./pages/Rewards";
+import Bookmarks from "./pages/Bookmarks";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
             <Route path="/tips" element={<Tips />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/rewards" element={<Rewards />} />
+            <Route path="/bookmarks" element={<Bookmarks />} />
           </Routes>
         </BrowserRouter>
       </div>
