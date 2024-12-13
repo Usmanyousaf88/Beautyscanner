@@ -9,8 +9,6 @@ interface ChallengeProps {
   reward: number;
   deadline: string;
   icon: React.ReactNode;
-  highContrast?: boolean;
-  largeText?: boolean;
 }
 
 const ChallengeCard = ({
@@ -21,53 +19,32 @@ const ChallengeCard = ({
   reward,
   deadline,
   icon,
-  highContrast = false,
-  largeText = false,
-}: ChallengeProps) => {
-  const cardClasses = `p-4 hover:shadow-md transition-all duration-300 ${
-    highContrast ? 'bg-gray-900 text-white border-white' : 'bg-white'
-  }`;
-
-  const textClasses = largeText ? 'text-base' : 'text-sm';
-
-  return (
-    <Card className={cardClasses}>
-      <div className="flex items-center gap-4">
-        {icon}
-        <div className="flex-1">
-          <div className="flex justify-between items-start">
-            <div>
-              <h3 className={`font-semibold ${highContrast ? 'text-white' : 'text-charcoal'}`}>
-                {title}
-              </h3>
-              <p className={`${textClasses} ${highContrast ? 'text-gray-300' : 'text-gray-600'}`}>
-                {description}
-              </p>
-            </div>
-            <span className={`text-xs font-medium ${
-              highContrast ? 'bg-white text-black' : 'text-primary bg-primary/10'
-            } px-2 py-1 rounded-full`}>
-              +{reward} pts
-            </span>
+}: ChallengeProps) => (
+  <Card className="p-4 hover:shadow-md transition-all duration-300">
+    <div className="flex items-center gap-4">
+      {icon}
+      <div className="flex-1">
+        <div className="flex justify-between items-start">
+          <div>
+            <h3 className="font-semibold text-charcoal">{title}</h3>
+            <p className="text-sm text-gray-600">{description}</p>
           </div>
-          <div className="mt-2">
-            <Progress 
-              value={(progress / total) * 100} 
-              className={`h-2 ${highContrast ? 'bg-gray-700' : ''}`}
-            />
-            <div className="flex justify-between mt-1">
-              <p className={`${textClasses} ${highContrast ? 'text-gray-300' : 'text-gray-500'}`}>
-                {progress}/{total} completed
-              </p>
-              <p className={`${textClasses} ${highContrast ? 'text-gray-300' : 'text-gray-500'}`}>
-                {deadline}
-              </p>
-            </div>
+          <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
+            +{reward} pts
+          </span>
+        </div>
+        <div className="mt-2">
+          <Progress value={(progress / total) * 100} className="h-2" />
+          <div className="flex justify-between mt-1">
+            <p className="text-xs text-gray-500">
+              {progress}/{total} completed
+            </p>
+            <p className="text-xs text-gray-500">{deadline}</p>
           </div>
         </div>
       </div>
-    </Card>
-  );
-};
+    </div>
+  </Card>
+);
 
 export default ChallengeCard;
