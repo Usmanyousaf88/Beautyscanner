@@ -1,8 +1,32 @@
 import { Scan, Search } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 import Navigation from "@/components/Navigation";
 
 const Index = () => {
+  const { toast } = useToast();
+
+  // Show welcome tip when component mounts
+  React.useEffect(() => {
+    const showTip = setTimeout(() => {
+      toast({
+        title: "Quick Tip",
+        description: "Try scanning your favorite moisturizer to learn more about its ingredients!",
+        duration: 5000,
+      });
+    }, 2000);
+
+    return () => clearTimeout(showTip);
+  }, [toast]);
+
+  const handleSearchFocus = () => {
+    toast({
+      title: "Search Products",
+      description: "Type any product name or ingredient to get started",
+      duration: 3000,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-cream">
       <div className="max-w-lg mx-auto px-4 pt-8 pb-20">
@@ -15,7 +39,8 @@ const Index = () => {
           <input
             type="search"
             placeholder="Search products or ingredients..."
-            className="w-full px-4 py-3 pl-12 rounded-full border border-gray-200 focus:outline-none focus:border-primary"
+            className="w-full px-4 py-3 pl-12 rounded-full border border-gray-200 focus:outline-none focus:border-primary transition-colors"
+            onFocus={handleSearchFocus}
           />
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
         </div>
@@ -23,7 +48,7 @@ const Index = () => {
         <div className="space-y-4 animate-fade-in" style={{ animationDelay: "0.2s" }}>
           <Link
             to="/scan"
-            className="block p-6 bg-primary text-white rounded-xl transition transform hover:scale-[1.02] active:scale-[0.98]"
+            className="block p-6 bg-primary text-white rounded-xl transition transform hover:scale-[1.02] active:scale-[0.98] hover:shadow-md"
           >
             <div className="flex items-center">
               <Scan size={32} />
@@ -35,8 +60,8 @@ const Index = () => {
           </Link>
 
           <Link
-            to="/ingredients"
-            className="block p-6 bg-secondary rounded-xl transition transform hover:scale-[1.02] active:scale-[0.98]"
+            to="/search"
+            className="block p-6 bg-secondary rounded-xl transition transform hover:scale-[1.02] active:scale-[0.98] hover:shadow-md"
           >
             <div className="flex items-center">
               <Search size={32} className="text-charcoal" />
@@ -48,7 +73,7 @@ const Index = () => {
           </Link>
         </div>
 
-        <div className="mt-12 p-6 bg-accent rounded-xl animate-fade-in" style={{ animationDelay: "0.3s" }}>
+        <div className="mt-12 p-6 bg-accent rounded-xl animate-fade-in hover:shadow-md transition-shadow" style={{ animationDelay: "0.3s" }}>
           <h3 className="text-lg font-semibold text-charcoal mb-2">Daily Tip</h3>
           <p className="text-gray-600">Look for products with natural preservatives like neem oil or grapefruit seed extract instead of parabens.</p>
         </div>
